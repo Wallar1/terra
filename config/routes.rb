@@ -3,4 +3,11 @@ Rails.application.routes.draw do
   get 'welcome/index'
   get 'welcome/render_itinerary'
   root 'welcome#index'
+
+  resources :sites
+  resources :bill_analyses
+  resources :designs
+  resources :proposals
+  resources :final_contracts
+  resources :messages
 end
