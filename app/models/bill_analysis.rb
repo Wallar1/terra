@@ -1,0 +1,2 @@
+class BillAnalysis < ApplicationRecord
+end

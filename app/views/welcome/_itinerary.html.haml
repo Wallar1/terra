@@ -1,0 +1,13 @@
+.col-md-4
+  .bdrs-3.ov-h.bgc-white.bd
+    .bgc-deep-purple-500.ta-c.p-30
+      %h1.fw-300.mB-5.lh-1.c-white
+        01
+        %span.fsz-def st
+      %h3.c-white Monday
+    .pos-r
+      %button.mT-nv-50.pos-a.r-10.t-2.btn.cur-p.bdrs-50p.p-0.w-3r.h-3r.btn-warning{:type => "button"}
+        %i.ti-plus
+      %ul.m-0.p-0.mT-20
+        - events.each do |event|
+          = render partial: 'itinerary_item', locals: {event: event}

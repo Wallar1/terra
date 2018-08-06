@@ -1,0 +1,2 @@
+class FinalContract < ApplicationRecord
+end

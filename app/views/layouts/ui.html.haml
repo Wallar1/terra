@@ -1,0 +1,537 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %meta{:charset => "utf-8"}/
+    %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}/
+    %title UI Elements
+    :css
+      #loader {
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        visibility: visible;
+        position: fixed;
+        height: 100vh;
+        width: 100%;
+        background: #fff;
+        z-index: 90000;
+      }
+
+      #loader.fadeOut {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: calc(50% - 20px);
+        left: calc(50% - 20px);
+        background-color: #333;
+        border-radius: 100%;
+        -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+        animation: sk-scaleout 1.0s infinite ease-in-out;
+      }
+
+      @-webkit-keyframes sk-scaleout {
+        0% { -webkit-transform: scale(0) }
+        100% {
+          -webkit-transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+
+      @keyframes sk-scaleout {
+        0% {
+          -webkit-transform: scale(0);
+          transform: scale(0);
+        } 100% {
+          -webkit-transform: scale(1.0);
+          transform: scale(1.0);
+          opacity: 0;
+        }
+      }
+  %body.app
+    / @TOC
+    / ===================================================
+    /
+      + @Page Loader
+      + @App Content
+      \- #Left Sidebar
+      > $Sidebar Header
+      > $Sidebar Menu
+      
+      \- #Main
+      > $Topbar
+      > $App Screen Content
+    / @Page Loader
+    / ===================================================
+    #loader
+      .spinner
+    :javascript
+      window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        setTimeout(() => {
+          loader.classList.add('fadeOut');
+        }, 300);
+      });
+    / @App Content
+    / ===================================================
+    %div
+      / #Left Sidebar ====================
+      .sidebar
+        .sidebar-inner
+          / ### $Sidebar Header ###
+          .sidebar-logo
+            .peers.ai-c.fxw-nw
+              .peer.peer-greed
+                %a.sidebar-link.td-n{:href => "index.html"}
+                  .peers.ai-c.fxw-nw
+                    .peer
+                      .logo
+                        %img{:alt => "", :src => "assets/static/images/logo.png"}/
+                    .peer.peer-greed
+                      %h5.lh-1.mB-0.logo-text Adminator
+              .peer
+                .mobile-toggle.sidebar-toggle
+                  %a.td-n{:href => ""}
+                    %i.ti-arrow-circle-left
+          / ### $Sidebar Menu ###
+          %ul.sidebar-menu.scrollable.pos-r
+            %li.nav-item.mT-30.active
+              %a.sidebar-link{:href => "index.html"}
+                %span.icon-holder
+                  %i.c-blue-500.ti-home
+                %span.title Dashboard
+            %li.nav-item
+              %a.sidebar-link{:href => "email.html"}
+                %span.icon-holder
+                  %i.c-brown-500.ti-email
+                %span.title Email
+            %li.nav-item
+              %a.sidebar-link{:href => "compose.html"}
+                %span.icon-holder
+                  %i.c-blue-500.ti-share
+                %span.title Compose
+            %li.nav-item
+              %a.sidebar-link{:href => "calendar.html"}
+                %span.icon-holder
+                  %i.c-deep-orange-500.ti-calendar
+                %span.title Calendar
+            %li.nav-item
+              %a.sidebar-link{:href => "chat.html"}
+                %span.icon-holder
+                  %i.c-deep-purple-500.ti-comment-alt
+                %span.title Chat
+            %li.nav-item
+              %a.sidebar-link{:href => "charts.html"}
+                %span.icon-holder
+                  %i.c-indigo-500.ti-bar-chart
+                %span.title Charts
+            %li.nav-item
+              %a.sidebar-link{:href => "forms.html"}
+                %span.icon-holder
+                  %i.c-light-blue-500.ti-pencil
+                %span.title Forms
+            %li.nav-item.dropdown
+              %a.sidebar-link{:href => "ui.html"}
+                %span.icon-holder
+                  %i.c-pink-500.ti-palette
+                %span.title UI Elements
+            %li.nav-item.dropdown
+              %a.dropdown-toggle{:href => "javascript:void(0);"}
+                %span.icon-holder
+                  %i.c-orange-500.ti-layout-list-thumb
+                %span.title Tables
+                %span.arrow
+                  %i.ti-angle-right
+              %ul.dropdown-menu
+                %li
+                  %a.sidebar-link{:href => "basic-table.html"} Basic Table
+                %li
+                  %a.sidebar-link{:href => "datatable.html"} Data Table
+            %li.nav-item.dropdown
+              %a.dropdown-toggle{:href => "javascript:void(0);"}
+                %span.icon-holder
+                  %i.c-purple-500.ti-map
+                %span.title Maps
+                %span.arrow
+                  %i.ti-angle-right
+              %ul.dropdown-menu
+                %li
+                  %a{:href => "google-maps.html"} Google Map
+                %li
+                  %a{:href => "vector-maps.html"} Vector Map
+            %li.nav-item.dropdown
+              %a.dropdown-toggle{:href => "javascript:void(0);"}
+                %span.icon-holder
+                  %i.c-red-500.ti-files
+                %span.title Pages
+                %span.arrow
+                  %i.ti-angle-right
+              %ul.dropdown-menu
+                %li
+                  %a.sidebar-link{:href => "blank.html"} Blank
+                %li
+                  %a.sidebar-link{:href => "404.html"} 404
+                %li
+                  %a.sidebar-link{:href => "500.html"} 500
+                %li
+                  %a.sidebar-link{:href => "signin.html"} Sign In
+                %li
+                  %a.sidebar-link{:href => "signup.html"} Sign Up
+            %li.nav-item.dropdown
+              %a.dropdown-toggle{:href => "javascript:void(0);"}
+                %span.icon-holder
+                  %i.c-teal-500.ti-view-list-alt
+                %span.title Multiple Levels
+                %span.arrow
+                  %i.ti-angle-right
+              %ul.dropdown-menu
+                %li.nav-item.dropdown
+                  %a{:href => "javascript:void(0);"}
+                    %span Menu Item
+                %li.nav-item.dropdown
+                  %a{:href => "javascript:void(0);"}
+                    %span Menu Item
+                    %span.arrow
+                      %i.ti-angle-right
+                  %ul.dropdown-menu
+                    %li
+                      %a{:href => "javascript:void(0);"} Menu Item
+                    %li
+                      %a{:href => "javascript:void(0);"} Menu Item
+      / #Main ============================
+      .page-container
+        / ### $Topbar ###
+        .header.navbar
+          .header-container
+            %ul.nav-left
+              %li
+                %a#sidebar-toggle.sidebar-toggle{:href => "javascript:void(0);"}
+                  %i.ti-menu
+              %li.search-box
+                %a.search-toggle.no-pdd-right{:href => "javascript:void(0);"}
+                  %i.search-icon.ti-search.pdd-right-10
+                  %i.search-icon-close.ti-close.pdd-right-10
+              %li.search-input
+                %input.form-control{:placeholder => "Search...", :type => "text"}/
+            %ul.nav-right
+              %li.notifications.dropdown
+                %span.counter.bgc-red 3
+                %a.dropdown-toggle.no-after{"data-toggle" => "dropdown", :href => ""}
+                  %i.ti-bell
+                %ul.dropdown-menu
+                  %li.pX-20.pY-15.bdB
+                    %i.ti-bell.pR-10
+                    %span.fsz-sm.fw-600.c-grey-900 Notifications
+                  %li
+                    %ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
+                      %li
+                        %a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100{:href => ""}
+                          .peer.mR-15
+                            %img.w-3r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/1.jpg"}/
+                          .peer.peer-greed
+                            %span
+                              %span.fw-500 John Doe
+                              %span.c-grey-600
+                                liked your
+                                %span.text-dark post
+                            %p.m-0
+                              %small.fsz-xs 5 mins ago
+                      %li
+                        %a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100{:href => ""}
+                          .peer.mR-15
+                            %img.w-3r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/2.jpg"}/
+                          .peer.peer-greed
+                            %span
+                              %span.fw-500 Moo Doe
+                              %span.c-grey-600
+                                liked your
+                                %span.text-dark cover image
+                            %p.m-0
+                              %small.fsz-xs 7 mins ago
+                      %li
+                        %a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100{:href => ""}
+                          .peer.mR-15
+                            %img.w-3r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/3.jpg"}/
+                          .peer.peer-greed
+                            %span
+                              %span.fw-500 Lee Doe
+                              %span.c-grey-600
+                                commented on your
+                                %span.text-dark video
+                            %p.m-0
+                              %small.fsz-xs 10 mins ago
+                  %li.pX-20.pY-15.ta-c.bdT
+                    %span
+                      %a.c-grey-600.cH-blue.fsz-sm.td-n{:href => ""}
+                        View All Notifications
+                        %i.ti-angle-right.fsz-xs.mL-10
+              %li.notifications.dropdown
+                %span.counter.bgc-blue 3
+                %a.dropdown-toggle.no-after{"data-toggle" => "dropdown", :href => ""}
+                  %i.ti-email
+                %ul.dropdown-menu
+                  %li.pX-20.pY-15.bdB
+                    %i.ti-email.pR-10
+                    %span.fsz-sm.fw-600.c-grey-900 Emails
+                  %li
+                    %ul.ovY-a.pos-r.scrollable.lis-n.p-0.m-0.fsz-sm
+                      %li
+                        %a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100{:href => ""}
+                          .peer.mR-15
+                            %img.w-3r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/1.jpg"}/
+                          .peer.peer-greed
+                            %div
+                              .peers.jc-sb.fxw-nw.mB-5
+                                .peer
+                                  %p.fw-500.mB-0 John Doe
+                                .peer
+                                  %small.fsz-xs 5 mins ago
+                              %span.c-grey-600.fsz-sm
+                                Want to create your own customized data generator for your app...
+                      %li
+                        %a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100{:href => ""}
+                          .peer.mR-15
+                            %img.w-3r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/2.jpg"}/
+                          .peer.peer-greed
+                            %div
+                              .peers.jc-sb.fxw-nw.mB-5
+                                .peer
+                                  %p.fw-500.mB-0 Moo Doe
+                                .peer
+                                  %small.fsz-xs 15 mins ago
+                              %span.c-grey-600.fsz-sm
+                                Want to create your own customized data generator for your app...
+                      %li
+                        %a.peers.fxw-nw.td-n.p-20.bdB.c-grey-800.cH-blue.bgcH-grey-100{:href => ""}
+                          .peer.mR-15
+                            %img.w-3r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/3.jpg"}/
+                          .peer.peer-greed
+                            %div
+                              .peers.jc-sb.fxw-nw.mB-5
+                                .peer
+                                  %p.fw-500.mB-0 Lee Doe
+                                .peer
+                                  %small.fsz-xs 25 mins ago
+                              %span.c-grey-600.fsz-sm
+                                Want to create your own customized data generator for your app...
+                  %li.pX-20.pY-15.ta-c.bdT
+                    %span
+                      %a.c-grey-600.cH-blue.fsz-sm.td-n{:href => "email.html"}
+                        View All Email
+                        %i.fs-xs.ti-angle-right.mL-10
+              %li.dropdown
+                %a.dropdown-toggle.no-after.peers.fxw-nw.ai-c.lh-1{"data-toggle" => "dropdown", :href => ""}
+                  .peer.mR-10
+                    %img.w-2r.bdrs-50p{:alt => "", :src => "https://randomuser.me/api/portraits/men/10.jpg"}/
+                  .peer
+                    %span.fsz-sm.c-grey-900 John Doe
+                %ul.dropdown-menu.fsz-sm
+                  %li
+                    %a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700{:href => ""}
+                      %i.ti-settings.mR-10
+                      %span Setting
+                  %li
+                    %a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700{:href => ""}
+                      %i.ti-user.mR-10
+                      %span Profile
+                  %li
+                    %a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700{:href => "email.html"}
+                      %i.ti-email.mR-10
+                      %span Messages
+                  %li.divider{:role => "separator"}
+                  %li
+                    %a.d-b.td-n.pY-5.bgcH-grey-100.c-grey-700{:href => ""}
+                      %i.ti-power-off.mR-10
+                      %span Logout
+        / ### $App Screen Content ###
+        %main.main-content.bgc-grey-100
+          #mainContent
+            .row.gap-20.masonry.pos-r
+              %h4.c-grey-900 UI Elements
+              .masonry-sizer.col-md-6
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Alerts
+                  .mT-30
+                    .alert.alert-primary{:role => "alert"}
+                      This is a primary alert—check it out!
+                    .alert.alert-secondary{:role => "alert"}
+                      This is a secondary alert—check it out!
+                    .alert.alert-success{:role => "alert"}
+                      This is a success alert—check it out!
+                    .alert.alert-danger{:role => "alert"}
+                      This is a danger alert—check it out!
+                    .alert.alert-warning{:role => "alert"}
+                      This is a warning alert—check it out!
+                    .alert.alert-info{:role => "alert"}
+                      This is a info alert—check it out!
+                    .alert.alert-light{:role => "alert"}
+                      This is a light alert—check it out!
+                    .alert.alert-dark{:role => "alert"}
+                      This is a dark alert—check it out!
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Buttons
+                  .mT-30
+                    .gap-10.peers
+                      .peer
+                        %button.btn.cur-p.btn-primary{:type => "button"} Primary
+                      .peer
+                        %button.btn.cur-p.btn-secondary{:type => "button"} Secondary
+                      .peer
+                        %button.btn.cur-p.btn-success{:type => "button"} Success
+                      .peer
+                        %button.btn.cur-p.btn-danger{:type => "button"} Danger
+                      .peer
+                        %button.btn.cur-p.btn-warning{:type => "button"} Warning
+                      .peer
+                        %button.btn.cur-p.btn-info{:type => "button"} Info
+                      .peer
+                        %button.btn.cur-p.btn-light{:type => "button"} Light
+                      .peer
+                        %button.btn.cur-p.btn-dark{:type => "button"} Dark
+                    .w-100.gap-10.peers.mY-20
+                      .peer
+                        %button.btn.cur-p.btn-outline-primary{:type => "button"} Primary
+                      .peer
+                        %button.btn.cur-p.btn-outline-secondary{:type => "button"} Secondary
+                      .peer
+                        %button.btn.cur-p.btn-outline-success{:type => "button"} Success
+                      .peer
+                        %button.btn.cur-p.btn-outline-danger{:type => "button"} Danger
+                      .peer
+                        %button.btn.cur-p.btn-outline-warning{:type => "button"} Warning
+                      .peer
+                        %button.btn.cur-p.btn-outline-info{:type => "button"} Info
+                      .peer
+                        %button.btn.cur-p.btn-outline-light{:type => "button"} Light
+                      .peer
+                        %button.btn.cur-p.btn-outline-dark{:type => "button"} Dark
+                    .btn-toolbar{"aria-label" => "Toolbar with button groups", :role => "toolbar"}
+                      .btn-group.mr-2{"aria-label" => "First group", :role => "group"}
+                        %button.btn.btn-success{:type => "button"} 1
+                        %button.btn.btn-success{:type => "button"} 2
+                        %button.btn.btn-success{:type => "button"} 3
+                        %button.btn.btn-success{:type => "button"} 4
+                      .btn-group.mr-2{"aria-label" => "Second group", :role => "group"}
+                        %button.btn.btn-success{:type => "button"} 5
+                        %button.btn.btn-success{:type => "button"} 6
+                        %button.btn.btn-success{:type => "button"} 7
+                      .btn-group{"aria-label" => "Third group", :role => "group"}
+                        %button.btn.btn-success{:type => "button"} 8
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Dropdowns
+                  .mT-30
+                    .dropdown
+                      %button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                        Dropdown button
+                      .dropdown-menu{"aria-labelledby" => "dropdownMenuButton"}
+                        %a.dropdown-item{:href => "#"} Action
+                        %a.dropdown-item{:href => "#"} Another action
+                        %a.dropdown-item{:href => "#"} Something else here
+                    / Example split danger button
+                    .btn-group.mT-20
+                      %button.btn.btn-danger{:type => "button"} Action
+                      %button.btn.btn-danger.dropdown-toggle.dropdown-toggle-split{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"}
+                        %span.sr-only Toggle Dropdown
+                      .dropdown-menu
+                        %a.dropdown-item{:href => "#"} Action
+                        %a.dropdown-item{:href => "#"} Another action
+                        %a.dropdown-item{:href => "#"} Something else here
+                        .dropdown-divider
+                        %a.dropdown-item{:href => "#"} Separated link
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 List Group
+                  .mT-30
+                    .list-group
+                      %a.list-group-item.list-group-item-action.active{:href => "#"}
+                        Cras justo odio
+                      %a.list-group-item.list-group-item-action{:href => "#"} Dapibus ac facilisis in
+                      %a.list-group-item.list-group-item-action{:href => "#"} Morbi leo risus
+                      %a.list-group-item.list-group-item-action{:href => "#"} Porta ac consectetur ac
+                      %a.list-group-item.list-group-item-action.disabled{:href => "#"} Vestibulum at eros
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Modal
+                  .mT-30
+                    / Button trigger modal
+                    %button.btn.btn-primary{"data-target" => "#exampleModal", "data-toggle" => "modal", :type => "button"}
+                      Launch demo modal
+                    / Modal
+                    #exampleModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+                      .modal-dialog{:role => "document"}
+                        .modal-content
+                          .modal-header
+                            %h5#exampleModalLabel.modal-title Modal title
+                            %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+                              %span{"aria-hidden" => "true"} ×
+                          .modal-body
+                            \...
+                          .modal-footer
+                            %button.btn.btn-secondary{"data-dismiss" => "modal", :type => "button"} Close
+                            %button.btn.btn-primary{:type => "button"} Save changes
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Popover
+                  .mT-30
+                    %button.btn.btn-danger{"data-content" => "And here's some amazing content. It's very engaging. Right?", "data-toggle" => "popover", :title => "Popover title", :type => "button"} Click to toggle popover
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Progress
+                  .mT-30
+                    / Progress Bars
+                    .layers
+                      .layer.w-100
+                        %h5.mB-5 100k
+                        %small.fw-600.c-grey-700 Visitors From USA
+                        %span.pull-right.c-grey-600.fsz-sm 50%
+                        .progress.mT-10
+                          .progress-bar.bgc-deep-purple-500{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "50", :role => "progressbar", :style => "width:50%;"}
+                            %span.sr-only 50% Complete
+                      .layer.w-100.mT-15
+                        %h5.mB-5 1M
+                        %small.fw-600.c-grey-700 Visitors From Europe
+                        %span.pull-right.c-grey-600.fsz-sm 80%
+                        .progress.mT-10
+                          .progress-bar.bgc-green-500{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "50", :role => "progressbar", :style => "width:80%;"}
+                            %span.sr-only 80% Complete
+                      .layer.w-100.mT-15
+                        %h5.mB-5 450k
+                        %small.fw-600.c-grey-700 Visitors From Australia
+                        %span.pull-right.c-grey-600.fsz-sm 40%
+                        .progress.mT-10
+                          .progress-bar.bgc-light-blue-500{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "50", :role => "progressbar", :style => "width:40%;"}
+                            %span.sr-only 40% Complete
+                      .layer.w-100.mT-15
+                        %h5.mB-5 1B
+                        %small.fw-600.c-grey-700 Visitors From India
+                        %span.pull-right.c-grey-600.fsz-sm 90%
+                        .progress.mT-10
+                          .progress-bar.bgc-blue-grey-500{"aria-valuemax" => "100", "aria-valuemin" => "0", "aria-valuenow" => "50", :role => "progressbar", :style => "width:90%;"}
+                            %span.sr-only 90% Complete
+              .masonry-item.col-md-6
+                .bgc-white.p-20.bd
+                  %h6.c-grey-900 Tootips
+                  .mT-30
+                    %button.btn.btn-primary{"data-placement" => "top", "data-toggle" => "tooltip", :title => "Tooltip on top", :type => "button"}
+                      Tooltip on top
+                    %button.btn.btn-secondary{"data-placement" => "right", "data-toggle" => "tooltip", :title => "Tooltip on right", :type => "button"}
+                      Tooltip on right
+                    %button.btn.btn-success{"data-placement" => "bottom", "data-toggle" => "tooltip", :title => "Tooltip on bottom", :type => "button"}
+                      Tooltip on bottom
+                    %button.btn.btn-danger{"data-placement" => "left", "data-toggle" => "tooltip", :title => "Tooltip on left", :type => "button"}
+                      Tooltip on left
+        / ### $App Screen Footer ###
+        %footer.bdT.ta-c.p-30.lh-0.fsz-sm.c-grey-600
+          %span
+            Copyright © 2017 Designed by
+            = succeed "." do
+              %a{:href => "https://colorlib.com", :target => "_blank", :title => "Colorlib"} Colorlib
