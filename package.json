@@ -16,7 +16,8 @@
     "perfect-scrollbar": "^1.4.0",
     "popper.js": "^1.14.4",
     "skycons": "^1.0.0",
-    "themify-icons": "^1.0.0"
+    "themify-icons": "^1.0.0",
+    "vue": "^2.5.17"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",

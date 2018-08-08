@@ -15,7 +15,7 @@ gem 'pg'
 gem 'formtastic', '~> 3.0'
 gem 'chronic'
 gem "aws-sdk-s3", require: false
-#add devise
+gem 'devise'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'

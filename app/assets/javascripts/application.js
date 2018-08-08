@@ -13,6 +13,6 @@
 //= require jquery3
 //= require popper
 //= require bootstrap
-//= require rails-ujs
+// i removed require rails-ujs
 //= require turbolinks
 //= require_tree .

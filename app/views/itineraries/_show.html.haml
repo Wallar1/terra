@@ -32,7 +32,7 @@
 
   // Authorization scopes required by the API; multiple scopes can be
   // included, separated by spaces.
-  var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+  var SCOPES = "https://www.googleapis.com/auth/calendar";
 
   
 
@@ -79,27 +79,62 @@
       'maxResults': 10,
       'orderBy': 'startTime'
     }).then(function(response){
-      console.log(response)
-      var events = response.result.items;
-      renderItinerary(events)
+      renderItinerary(response.result.items)
     })
   }
 
   function renderItinerary(events){
     $.ajax({
-      url: '/welcome/render_itinerary',
+      url: '/calendar_events',
       data: {events: JSON.stringify(events)},
       type: 'GET',
       success: function(response){
         $('#itineraryItems').html(response)
-        console.log($('#itineraryItems').html())
       }
     })
   }
 
+
+  var CALEVENT = {
+      'summary': 'Google I/O 2015',
+      'location': '800 Howard St., San Francisco, CA 94103',
+      'description': 'A chance to hear more about Google\'s developer products.',
+      'start': {
+        'dateTime': '2018-08-09T09:00:00-07:00',
+        'timeZone': 'America/Los_Angeles'
+      },
+      'end': {
+        'dateTime': '2018-08-09T10:00:00-07:00',
+        'timeZone': 'America/Los_Angeles'
+      },
+    }
+
+  $(document).on('turbolinks:load',function(){
+    $('#add_event').click(function(){
+      gapi.client.calendar.events.insert({
+        'calendarId': '0ebaddf129c7ars64fhihg9cv0@group.calendar.google.com',
+        'resource': CALEVENT
+      }).then(function(){
+        listUpcomingEvents()
+      })
+    })
+  })
+  
+
 %script{:async => "", :defer => "defer", :onload => "this.onload=function(){};handleClientLoad();", :onreadystatechange => "if (this.readyState === 'complete') this.onload()", :src => "https://apis.google.com/js/api.js"}
 %button.btn.btn-primary#authorize_button Authorize
 %button.btn.btn-primary#signout_button Sign Out
-#itineraryItems
+.col-md-4
+  .bdrs-3.ov-h.bgc-white.bd
+    .bgc-deep-purple-500.ta-c.p-30
+      %h1.fw-300.mB-5.lh-1.c-white
+        01
+        %span.fsz-def st
+      %h3.c-white Monday
+    .pos-r
+      %button.mT-nv-50.pos-a.r-10.t-2.btn.cur-p.bdrs-50p.p-0.w-3r.h-3r.btn-warning#add_event{:type => "button"}
+        %i.ti-plus
+      %ul.m-0.p-0.mT-20
+        #itineraryItems
 / %a{href: 'https://google.com/calendar', target: '_blank'}
 /   .btn.btn-primary My Google Calendars

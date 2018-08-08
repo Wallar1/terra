@@ -1,0 +1,10 @@
+:javascript
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('mappy'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8
+    });
+  }
+%script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initMap"}
+.layer.w-100{style: 'height: 500px;'}
+  #mappy.w-100.h-100

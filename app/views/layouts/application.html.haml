@@ -7,9 +7,17 @@
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application'
-
-    %script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initMap"}
   %body.app
-    #loader
-      .spinner
-    = yield
+    //%a{href: "#{asset_path 'vcard.vcf'}", download: ''} download me
+    = render partial: 'shared/loader'
+    %div
+      = render partial: 'shared/sidebar'
+      .page-container
+        = render partial: 'shared/header'
+        = yield
+        = render partial: 'shared/footer'
+    
+
+
+
+
