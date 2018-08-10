@@ -1,0 +1,62 @@
+:javascript
+  $(document).on('turbolinks:load',function(){
+    $('#submit_event').click(function(){
+      submit_new_event()
+    })
+
+    function submit_new_event(){
+      gapi.client.calendar.events.insert({
+        'calendarId': '0ebaddf129c7ars64fhihg9cv0@group.calendar.google.com',
+        'resource': added_event()
+      }).then(function(){
+        listUpcomingEvents()
+        $('#calendar-edit').modal('hide')
+      })
+    }
+
+    function added_event(){
+      return {
+        'summary': $('input#event_title').val(),
+        'description': $('textarea#event_summary').val(),
+        'start': {
+          'dateTime': moment($('input#start_date').val()).format(),
+          'timeZone': 'America/Los_Angeles'
+        },
+        'end': {
+          'dateTime': moment($('input#end_date').val()).format(),
+          'timeZone': 'America/Los_Angeles'
+        },
+      }
+    }
+  })
+
+#calendar-edit.modal.fade
+  .modal-dialog{:role => "document"}
+    .modal-content
+      .bd.p-15
+        %h5.m-0 Add Event
+      .modal-body
+        %form
+          .form-group
+            %label.fw-500 Event Title
+            %input.form-control.bdc-grey-200#event_title
+          .row
+            .col-md-6
+              %label.fw-500 Start
+              .timepicker-input.input-icon.form-group
+                .input-group
+                  .input-group-addon.bgc-white.bd.bdwR-0
+                    %i.ti-calendar
+                  %input.form-control.bdc-grey-200.start-date#start_date{"data-provide" => "datepicker", :placeholder => "Datepicker", :type => "text"}/
+            .col-md-6
+              %label.fw-500 End
+              .timepicker-input.input-icon.form-group
+                .input-group
+                  .input-group-addon.bgc-white.bd.bdwR-0
+                    %i.ti-calendar
+                  %input.form-control.bdc-grey-200.end-date#end_date{"data-provide" => "datepicker", :placeholder => "Datepicker", :type => "text"}/
+          .form-group
+            %label.fw-500 Event Summary
+            %textarea.form-control.bdc-grey-200#event_summary{:rows => "5"}
+          .text-right
+            .btn.btn-primary.cur-p#submit_event Done

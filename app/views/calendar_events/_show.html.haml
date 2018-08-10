@@ -1,16 +1,16 @@
-%li.bdB.peers.ai-c.jc-sb.fxw-nw.p-5
-  //%a.td-n.p-20.peers.fxw-nw.mR-20.peer-greed.c-grey-900{"data-target" => "#calendar-edit", "data-toggle" => "modal", :href => "javascript:void(0);"}
+%li.bdB.peers.ai-c.justify-content-between.fxw-nw.p-5
+  %a.td-n.p-20.peers.fxw-nw.mR-20.peer-greed.c-grey-900{"data-target" => "#calendar-edit", "data-toggle" => "modal", :href => "javascript:void(0);", style: 'max-width: 20%;'}
+    .peer.mR-15
+      %i.fa.fa-fw.fa-clock-o.c-red-500
   .peer.mR-15
-    %i.fa.fa-fw.fa-clock-o.c-red-500
-  .peer
     %span.fw-600 #{event['summary']}
     .c-grey-600
       .c-grey-700 #{format_date(event['start']['dateTime'] || event['start']['date'])}
       %i #{event['creator']['displayName']}
-  / .peers.mR-15
-  /   .peer
-  /     %a.td-n.c-deep-purple-500.cH-blue-500.fsz-md.p-5{:href => ""}
-  /       %i.ti-pencil
-  /   .peer
-  /     %a.td-n.c-red-500.cH-blue-500.fsz-md.p-5{:href => ""}
-  /       %i.ti-trash
+  .peers.mR-15
+    .peer
+      %a.td-n.c-deep-purple-500.cH-blue-500.fsz-md.p-5{:href => ""}
+        %i.ti-pencil
+    .peer
+      %a.td-n.c-red-500.cH-blue-500.fsz-md.p-5{:href => ""}
+        %i.ti-trash

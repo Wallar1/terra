@@ -3075,7 +3075,7 @@ jquery-sparkline@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/jquery-sparkline/-/jquery-sparkline-2.4.0.tgz#1be8b7b704dd3857152708aefb1d4a4b3a69fb33"
 
-"jquery@2 - 3", jquery@>=1.5, jquery@>=1.7, "jquery@>=1.7.1 <4.0.0":
+"jquery@2 - 3", jquery@>=1.7, "jquery@>=1.7.1 <4.0.0":
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
@@ -3173,12 +3173,6 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
-
-jvectormap@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/jvectormap/-/jvectormap-2.0.4.tgz#7913e1577285c156eda156430f90ed5ada068e4b"
-  dependencies:
-    jquery ">=1.5"
 
 killable@^1.0.0:
   version "1.0.0"

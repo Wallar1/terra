@@ -95,28 +95,9 @@
   }
 
 
-  var CALEVENT = {
-      'summary': 'Google I/O 2015',
-      'location': '800 Howard St., San Francisco, CA 94103',
-      'description': 'A chance to hear more about Google\'s developer products.',
-      'start': {
-        'dateTime': '2018-08-09T09:00:00-07:00',
-        'timeZone': 'America/Los_Angeles'
-      },
-      'end': {
-        'dateTime': '2018-08-09T10:00:00-07:00',
-        'timeZone': 'America/Los_Angeles'
-      },
-    }
-
   $(document).on('turbolinks:load',function(){
     $('#add_event').click(function(){
-      gapi.client.calendar.events.insert({
-        'calendarId': '0ebaddf129c7ars64fhihg9cv0@group.calendar.google.com',
-        'resource': CALEVENT
-      }).then(function(){
-        listUpcomingEvents()
-      })
+      $('#calendar-edit').modal()
     })
   })
   
@@ -136,5 +117,6 @@
         %i.ti-plus
       %ul.m-0.p-0.mT-20
         #itineraryItems
+= render partial: 'calendar_events/form'
 / %a{href: 'https://google.com/calendar', target: '_blank'}
 /   .btn.btn-primary My Google Calendars

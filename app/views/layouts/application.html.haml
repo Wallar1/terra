@@ -10,12 +10,15 @@
   %body.app
     //%a{href: "#{asset_path 'vcard.vcf'}", download: ''} download me
     = render partial: 'shared/loader'
-    %div
-      = render partial: 'shared/sidebar'
-      .page-container
-        = render partial: 'shared/header'
-        = yield
-        = render partial: 'shared/footer'
+    -if user_signed_in?
+      %div
+        = render partial: 'shared/sidebar'
+        .page-container
+          = render partial: 'shared/header'
+          = yield
+          = render partial: 'shared/footer'
+    - else
+      = yield
     
 
 

@@ -1,0 +1,24 @@
+.peers.ai-s.fxw-nw.h-100vh
+  .peer.peer-greed.h-100.pos-r.bgr-n.bgpX-c.bgpY-c.bgsz-cv{:class => "d-n@sm-", :style => "background-image: url('assets/bg.jpg')"}
+    .pos-a.centerXY
+      .bgc-white.bdrs-50p.pos-r{:style => "width: 120px; height: 120px;"}
+        %img.pos-a.centerXY{:alt => "", :src => "#{asset_path 'logo.png'}"}/
+  .col-12.col-md-4.peer.pX-40.pY-80.h-100.bgc-white.scrollable.pos-r{:style => "min-width: 320px;"}
+    %h4.fw-300.c-grey-900.mB-40 Login
+    %form
+      .form-group
+        %label.text-normal.text-dark Username
+        %input.form-control{:placeholder => "John Doe", :type => "email"}/
+      .form-group
+        %label.text-normal.text-dark Password
+        %input.form-control{:placeholder => "Password", :type => "password"}/
+      .form-group
+        .peers.ai-c.jc-sb.fxw-nw
+          .peer
+            .checkbox.checkbox-circle.checkbox-info.peers.ai-c
+              %input#inputCall1.peer{:name => "inputCheckboxesCall", :type => "checkbox"}/
+              %label.peers.peer-greed.js-sb.ai-c{:for => "inputCall1"}
+                %span.peer.peer-greed Remember Me
+          .peer
+            %button.btn.btn-primary Login
+    %a{href: "/auth/google_oauth2"} Sign in with Google
