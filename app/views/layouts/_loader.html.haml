@@ -9,12 +9,11 @@
 
 :javascript
   //loading animation
-  window.addEventListener('load', () => {
-    const loader = document.getElementById('loader');
-    setTimeout(() => {
-      loader.classList.add('fadeOut');
-    }, 300);
-  });
+  $(document).on('turbolinks:load',()=>{
+    setTimeout(()=>{
+      $('#loader').addClass('fadeOut')
+    },1000)
+  })
 
 :css
   #loader {

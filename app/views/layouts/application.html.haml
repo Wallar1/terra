@@ -9,14 +9,15 @@
     = javascript_pack_tag 'application'
   %body.app
     //%a{href: "#{asset_path 'vcard.vcf'}", download: ''} download me
-    = render partial: 'shared/loader'
+    = render partial: 'layouts/loader'
     -if user_signed_in?
       %div
-        = render partial: 'shared/sidebar'
+        = render partial: 'layouts/sidebar'
         .page-container
-          = render partial: 'shared/header'
+          = render partial: 'layouts/header'
+          = render partial: 'layouts/flash'
           = yield
-          = render partial: 'shared/footer'
+          = render partial: 'layouts/footer'
     - else
       = yield
     

@@ -11,8 +11,15 @@
 // about supported directives.
 //
 //= require jquery3
+//= require jquery_ujs
 //= require popper
 //= require bootstrap
 // i removed require rails-ujs
 //= require turbolinks
 //= require_tree .
+
+
+$(document).on('turbolinks:load',()=>{
+  $('[data-toggle="tooltip"]').tooltip();
+  $('[data-toggle="popover"]').popover();
+})

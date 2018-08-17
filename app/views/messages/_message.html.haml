@@ -1,0 +1,6 @@
+.message-container
+  .row
+    .col-md-12.p0
+      %p= raw message.text
+  %p
+    %small #{message.user.email}  at  #{format_date(message.created_at)}

@@ -7,6 +7,8 @@ class CreateBillAnalyses < ActiveRecord::Migration[5.1]
       t.string :current_price_kwh
       t.string :optimal_system_size
 
+      t.references :site
+
       t.datetime :deleted_at
       t.index :deleted_at
       t.timestamps

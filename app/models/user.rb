@@ -1,5 +1,14 @@
 class User < ApplicationRecord
+  include UserRoles
+  
+  has_many :messages
+  has_many :sites
+  has_and_belongs_to_many :roles
+
+  
   def self.find_or_create_from_auth_hash(auth)
+    #to add roles, do something where you find the user by email here and update, or create the new user
+    #that way we dont have to know the uid beforehand and can add roles before they sign in
     where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
       user.provider = auth.provider
       user.uid = auth.uid

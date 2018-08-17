@@ -1,10 +1,44 @@
 :javascript
   function initMap() {
     map = new google.maps.Map(document.getElementById('mappy'), {
-      center: {lat: -34.397, lng: 150.644},
-      zoom: 8
+      center: JSON.parse('#{raw @sites_details}')[0]['latlng'],
+      zoom: 14
+    });
+
+    var markers = JSON.parse('#{ raw @sites_details}').map(function(site) {
+      marker = new google.maps.Marker({
+        position: site.latlng
+      });
+      marker.addListener('click', function() {
+        open_info(marker,map,infowindow,site)
+      });
+      $("[site_id='"+site.id+"']").click(()=>{
+        map.panTo(site.latlng)
+        open_info(marker,map,infowindow,site)
+      })
+      return marker
+    });
+
+    function open_info(marker,map,infowindow,site){
+      map.panTo(site.latlng)
+      infowindow.open(map, marker);
+      infowindow.setContent(site.infowindowcontent)
+      infowindow.setPosition(site.latlng)
+    }
+    // Add a marker clusterer to manage the markers.
+    var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    var infowindow = new google.maps.InfoWindow({
+      content: ''
     });
   }
-%script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_MAPS']}&callback=initMap"}
+
+
+%script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=initMap"}
+%script{src: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"}
 .layer.w-100{style: 'height: 500px;'}
   #mappy.w-100.h-100
+.row
+  - JSON.parse(@sites_details).each do |site|
+    .col-sm-4
+      = render partial: 'sites/card', locals: {:site => site['site']}

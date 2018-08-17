@@ -13,8 +13,6 @@ class CreateDesigns < ActiveRecord::Migration[5.1]
       t.boolean :is_contract
 
       t.references :site
-      t.references :designer
-      t.references :qa
 
       t.datetime :deleted_at
       t.index :deleted_at

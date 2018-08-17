@@ -1,0 +1,12 @@
+.card{:style => "width: 18rem;"}
+  %img.card-img-top{site_id: "#{site['id']}", :alt => "Card image cap", :src => "#{asset_path 'avatar_placeholder.png'}"}
+  .card-body
+    %h5.card-title= site['first_name'] + ' ' + site['last_name']
+    %p.card-text= site['address']
+    %p.card-text= site['character_notes']
+  %ul.list-group.list-group-flush
+    %li.list-group-item= site['email']
+    %li.list-group-item= site['phone']
+  .card-body.d-flex.justify-content-around
+    %i= link_to '', site_path(site['id']), class: 'fas fa-home'
+    %i= link_to '', edit_site_path(site['id']), class: 'fas fa-edit'

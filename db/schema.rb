@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_09_034246) do
+ActiveRecord::Schema.define(version: 2018_08_15_060003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,10 +42,12 @@ ActiveRecord::Schema.define(version: 2018_08_09_034246) do
     t.string "status"
     t.string "current_price_kwh"
     t.string "optimal_system_size"
+    t.bigint "site_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_bill_analyses_on_deleted_at"
+    t.index ["site_id"], name: "index_bill_analyses_on_site_id"
   end
 
   create_table "designs", force: :cascade do |t|
@@ -60,14 +62,10 @@ ActiveRecord::Schema.define(version: 2018_08_09_034246) do
     t.float "offset"
     t.boolean "is_contract"
     t.bigint "site_id"
-    t.bigint "designer_id"
-    t.bigint "qa_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_designs_on_deleted_at"
-    t.index ["designer_id"], name: "index_designs_on_designer_id"
-    t.index ["qa_id"], name: "index_designs_on_qa_id"
     t.index ["site_id"], name: "index_designs_on_site_id"
   end
 
@@ -81,12 +79,22 @@ ActiveRecord::Schema.define(version: 2018_08_09_034246) do
     t.datetime "credit_expired_at"
     t.float "price"
     t.text "notes"
-    t.bigint "user_id"
+    t.bigint "site_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_final_contracts_on_deleted_at"
-    t.index ["user_id"], name: "index_final_contracts_on_user_id"
+    t.index ["site_id"], name: "index_final_contracts_on_site_id"
+  end
+
+  create_table "finances", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "installs", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -105,6 +113,31 @@ ActiveRecord::Schema.define(version: 2018_08_09_034246) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "objection_sites", force: :cascade do |t|
+    t.bigint "site_id"
+    t.bigint "objection_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["objection_id"], name: "index_objection_sites_on_objection_id"
+    t.index ["site_id"], name: "index_objection_sites_on_site_id"
+  end
+
+  create_table "objections", force: :cascade do |t|
+    t.string "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "permits", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "plan_sets", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "proposals", force: :cascade do |t|
     t.datetime "start_at"
     t.datetime "end_at"
@@ -120,6 +153,21 @@ ActiveRecord::Schema.define(version: 2018_08_09_034246) do
     t.index ["design_id"], name: "index_proposals_on_design_id"
   end
 
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roles_users", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_roles_users_on_role_id"
+    t.index ["user_id"], name: "index_roles_users_on_user_id"
+  end
+
   create_table "sites", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
@@ -128,12 +176,13 @@ ActiveRecord::Schema.define(version: 2018_08_09_034246) do
     t.float "long"
     t.string "email"
     t.string "phone"
+    t.text "character_notes"
     t.bigint "customer_id"
-    t.bigint "consultant_id"
+    t.bigint "consultants_id"
     t.datetime "deleted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["consultant_id"], name: "index_sites_on_consultant_id"
+    t.index ["consultants_id"], name: "index_sites_on_consultants_id"
     t.index ["customer_id"], name: "index_sites_on_customer_id"
     t.index ["deleted_at"], name: "index_sites_on_deleted_at"
   end

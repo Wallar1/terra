@@ -9,7 +9,7 @@ class CreateProposals < ActiveRecord::Migration[5.1]
       t.string :discount_level
 
       t.references :design
-      
+
       t.datetime :deleted_at
       t.index :deleted_at
       t.timestamps

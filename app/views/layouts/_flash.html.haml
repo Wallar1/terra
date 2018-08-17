@@ -1,0 +1,14 @@
+#flash-messages
+  - if flash[:notice].present?
+    .alert.alert-success
+      = flash[:notice]
+  - if flash[:alert].present?
+    .alert.alert-danger
+      = flash[:alert]
+
+
+:javascript
+  setTimeout(function(){
+    $('#flash-messages').slideUp()
+  }, 3000)
+  

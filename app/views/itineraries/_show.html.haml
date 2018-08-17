@@ -13,19 +13,22 @@
       discoveryDocs: DISCOVERY_DOCS,
       scope: SCOPES
     }).then(function () {
+      if(gapi.auth2.getAuthInstance().isSignedIn.get()){
+        listUpcomingEvents()
+      }
       // Listen for sign-in state changes.
-      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+      //gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
       // Handle the initial sign-in state.
-      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-      $('#authorize_button').on('click',handleAuthClick);
-      $('#signout_button').on('click',handleSignoutClick);
+      //updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+      //$('#authorize_button').on('click',handleAuthClick);
+      //$('#signout_button').on('click',handleSignoutClick);
     });
   }
 
   // Client ID and API key from the Developer Console
   var CLIENT_ID = "#{ENV['GOOGLE_CLIENT_ID']}";
-  var API_KEY = "#{ENV['GOOGLE_CALENDAR']}";
+  var API_KEY = "#{ENV['GOOGLE_API_KEY']}";
 
   // Array of API discovery doc URLs for APIs used by the quickstart
   var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
@@ -36,36 +39,37 @@
 
   
 
-  /**
-   *  Called when the signed in status changes, to update the UI
-   *  appropriately. After a sign-in, the API is called.
-   */
-  function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-      $('#authorize_button').css('display','none');
-      $('#signout_button').css('display','block');
-      listUpcomingEvents();
-    } else {
-      $('#authorize_button').css('display','block');
-      $('#signout_button').css('display','none');
-    }
-  }
+  ///**
+  //  *  Called when the signed in status changes, to update the UI
+  //  *  appropriately. After a sign-in, the API is called.
+  //  */
+  // function updateSigninStatus(isSignedIn) {
+  //   if (isSignedIn) {
+  //     $('#authorize_button').css('display','none');
+  //     //$('#signout_button').css('display','block');
+  //     listUpcomingEvents();
+  //   } else {
+  //     $('#authorize_button').css('display','block');
+  //     //$('#signout_button').css('display','none');
+  //   }
+  // }
+
+  ///**
+  //  *  Sign in the user upon button click.
+  //  */
+  // function handleAuthClick(event) {
+  //   gapi.auth2.getAuthInstance().signIn();
+  // }
+
+  // /**
+  //  *  Sign out the user upon button click.
+  //  */
+  // function handleSignoutClick(event) {
+  //   gapi.auth2.getAuthInstance().signOut();
+  // }
 
   /**
-   *  Sign in the user upon button click.
-   */
-  function handleAuthClick(event) {
-    gapi.auth2.getAuthInstance().signIn();
-  }
 
-  /**
-   *  Sign out the user upon button click.
-   */
-  function handleSignoutClick(event) {
-    gapi.auth2.getAuthInstance().signOut();
-  }
-
-  /**
    * Print the summary and start datetime/date of the next ten events in
    * the authorized user's calendar. If no events are found an
    * appropriate message is printed.
@@ -103,20 +107,19 @@
   
 
 %script{:async => "", :defer => "defer", :onload => "this.onload=function(){};handleClientLoad();", :onreadystatechange => "if (this.readyState === 'complete') this.onload()", :src => "https://apis.google.com/js/api.js"}
-%button.btn.btn-primary#authorize_button Authorize
-%button.btn.btn-primary#signout_button Sign Out
-.col-md-4
-  .bdrs-3.ov-h.bgc-white.bd
-    .bgc-deep-purple-500.ta-c.p-30
-      %h1.fw-300.mB-5.lh-1.c-white
-        01
-        %span.fsz-def st
-      %h3.c-white Monday
-    .pos-r
-      %button.mT-nv-50.pos-a.r-10.t-2.btn.cur-p.bdrs-50p.p-0.w-3r.h-3r.btn-warning#add_event{:type => "button"}
-        %i.ti-plus
-      %ul.m-0.p-0.mT-20
-        #itineraryItems
+//%button.btn.btn-primary#authorize_button Authorize
+//%button.btn.btn-primary#signout_button Sign Out
+.bdrs-3.ov-h.bgc-white.bd
+  .bgc-deep-purple-500.ta-c.p-30
+    %h1.fw-300.mB-5.lh-1.c-white
+      01
+      %span.fsz-def st
+    %h3.c-white Monday
+  .pos-r
+    %button.mT-nv-50.pos-a.r-10.t-2.btn.cur-p.bdrs-50p.p-0.w-3r.h-3r.btn-warning#add_event{:type => "button"}
+      %i.ti-plus
+    %ul.m-0.p-0.mT-20
+      #itineraryItems
 = render partial: 'calendar_events/form'
 / %a{href: 'https://google.com/calendar', target: '_blank'}
 /   .btn.btn-primary My Google Calendars

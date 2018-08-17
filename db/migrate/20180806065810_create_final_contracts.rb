@@ -11,7 +11,7 @@ class CreateFinalContracts < ActiveRecord::Migration[5.1]
       t.float :price
       t.text :notes
 
-      t.references :user
+      t.references :site
       
       t.datetime :deleted_at
       t.index :deleted_at

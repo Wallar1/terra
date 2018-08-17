@@ -1,0 +1,9 @@
+%main.main-content.bgc-grey-100
+  #mainContent
+    .row.gap-20.masonry.pos-r
+    = render partial: 'monthly_stats'
+    .row.gap-20.masonry.pos-r
+      .masonry-sizer.col-md-3
+        = render 'itineraries/show'
+      .masonry-sizer.col-md-9
+        = render partial: 'maps/show'
