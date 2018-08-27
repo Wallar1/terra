@@ -17,7 +17,6 @@
 // i removed require rails-ujs
 //= require turbolinks
 //= require react
-//= require react_ujs
 //= require_tree .
 
 
