@@ -3,6 +3,7 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",
+    "babel-preset-react": "^6.24.1",
     "chart.js": "^2.7.2",
     "datatables": "^1.10.18",
     "easy-pie-chart": "^2.1.7",
@@ -11,9 +12,12 @@
     "load-google-maps-api": "^1.3.2",
     "masonry-layout": "^4.2.2",
     "perfect-scrollbar": "^1.4.0",
+    "prop-types": "^15.6.2",
+    "punycode": "^2.1.1",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
     "skycons": "^1.0.0",
-    "themify-icons": "^1.0.0",
-    "vue": "^2.5.17"
+    "themify-icons": "^1.0.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",

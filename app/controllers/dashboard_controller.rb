@@ -13,17 +13,17 @@ class DashboardController < ApplicationController
 
   def all_sites_details
     details = []
+    @sites = []
     Site.all.each do |site|
       next if site.lat.blank? || site.long.blank?
       details << {
                     latlng: {lat: site.lat, lng: site.long},
                     infowindowcontent: ApplicationController.render('maps/_infowindow', locals: {:@site => site}, layout: false).gsub(/\n/,''),
                     name: site.full_name,
-                    id: site.id,
-                    site: site
+                    id: site.id
                   }
+      @sites << site
     end
-
     details.to_json
   end
 end

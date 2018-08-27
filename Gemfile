@@ -7,6 +7,7 @@ end
 
 
 gem 'webpacker'
+gem 'react_on_rails', '11.0.9'
 gem 'bootstrap', '~> 4.1.3'
 gem 'jquery-rails'
 gem 'perfect-scrollbar-rails'
@@ -16,6 +17,8 @@ gem 'formtastic', '~> 3.0'
 gem 'chronic'
 gem "aws-sdk-s3", require: false
 gem 'omniauth-google-oauth2'
+gem 'image_processing', '~> 1.2'
+gem "mini_magick"
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'

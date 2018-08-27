@@ -84,10 +84,10 @@
           %a.sidebar-link.td-n{:href => "index.html"}
             .peers.ai-c.fxw-nw
               .peer
-                .logo
-                  %img{:alt => "", :src => "#{asset_path 'logo.png'}"}/
-              .peer.peer-greed
-                %h5.lh-1.mB-0.logo-text Adminator
+                .logo.d-flex.align-items-center
+                  %img{:alt => "", :src => "#{asset_path 'logo.png'}", style: 'max-width: 65px; max-height: 70px;'}/
+              / .peer.peer-greed
+              /   %h5.lh-1.mB-0.logo-text Stellar Power
         .peer
           .mobile-toggle.sidebar-toggle
             %a.td-n{:href => ""}
@@ -104,6 +104,11 @@
           %span.icon-holder
             %i.c-orange-500.fas.fa-sitemap
           %span.title Pipeline
+      %li.nav-item.mT-30.active
+        %a.sidebar-link{:href => "index.html"}
+          %span.icon-holder
+            %i.c-purple-500.fas.fa-map-marker-alt
+          %span.title Map
       %li.nav-item.mT-30.active
         %a.sidebar-link{:href => "index.html"}
           %span.icon-holder

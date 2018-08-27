@@ -10,7 +10,9 @@ class CreateDesigns < ActiveRecord::Migration[5.1]
       t.string :design_type
       t.string :status
       t.float :offset
-      t.boolean :is_contract
+      t.boolean :msp_upgrade_required
+      t.string :estimated_production
+      t.string :estimated_system_size
 
       t.references :site
 

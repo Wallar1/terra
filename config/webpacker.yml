@@ -1,4 +1,4 @@
-# Note: You must restart bin/webpack-dev-server for changes to take effect
+./bin/webpack-dev-server --hot --host 127.0.0.1# Note: 
 
 default: &default
   source_path: app/javascript

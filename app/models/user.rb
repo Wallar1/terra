@@ -20,6 +20,13 @@ class User < ApplicationRecord
     end
   end
 
+  def self.current_id
+    Thread.current[:user_id]
+  end
+  def self.current_id=(user_id)
+    Thread.current[:user_id] = user_id
+  end
+
   def full_name
     first_name + ' ' + last_name
   end

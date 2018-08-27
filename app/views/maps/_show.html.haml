@@ -39,6 +39,6 @@
 .layer.w-100{style: 'height: 500px;'}
   #mappy.w-100.h-100
 .row
-  - JSON.parse(@sites_details).each do |site|
+  - @sites.each do |site|
     .col-sm-4
-      = render partial: 'sites/card', locals: {:site => site['site']}
+      = render partial: 'sites/card', locals: {:site => site}

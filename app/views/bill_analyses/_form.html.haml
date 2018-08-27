@@ -3,9 +3,10 @@
     .row.gap-20.masonry.pos-r
     .masonry-item.col-md-12
       .bgc-white.p-20.bd
-        %h6.c-grey-900 New Customer
+        %h6.c-grey-900 Bill Analysis
         .mT-30
-          = form_for bill do |f|
+          = form_for bill, html: {class: 'dropzone'} do |f|
+            = f.hidden_field :site_id, value: bill.site_id || Site.last.id
             .form-group.col-md-6
               %label Current Price per KWH
               = f.text_field :current_price_kwh, class: 'form-control'
@@ -14,7 +15,15 @@
               = f.text_field :optimal_system_size, class: 'form-control'
             .form-group.col-md-6
               %label Status
-              = f.text_field :status, class: 'form-control'
+              = f.text_field :status, value: bill.status, class: 'form-control'
+            .form-group.col-md-6
+              %label Upload Bill File
+              = f.file_field :bill_files, value: bill.bill_files, multiple: true
+              - bill.bill_files.each do |bf|
+                - if bf.variable?
+                  = image_tag bf.variant(resize_to_fit: [100, 100])
+                - elsif bf.previewable?
+                  = image_tag bf.preview(resize_to_limit: [100, 100])
             .d-flex.justify-content-around
               = f.submit 'Save Bill Analysis', class: 'btn btn-primary'
               - if !bill.new_record?

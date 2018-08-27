@@ -1,0 +1,2 @@
+class ModuleArray < ApplicationRecord
+end

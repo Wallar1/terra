@@ -1,8 +1,8 @@
 class Message < ApplicationRecord
-  belongs_to :site
-  belongs_to :user
+  belongs_to :site, optional: true
+  belongs_to :user, optional: true
 
-  after_save :broadcast_partial
+  #after_save :broadcast_partial
 
   def broadcast_partial
     MessageBroadcastJob.perform_now(self.id)

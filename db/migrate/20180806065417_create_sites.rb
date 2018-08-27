@@ -6,9 +6,11 @@ class CreateSites < ActiveRecord::Migration[5.1]
       t.string :address
       t.float :lat
       t.float :long
-      t.string :email
+      t.string :emails, array: true, default: []
       t.string :phone
       t.text :character_notes
+      t.string :cancellation_reason
+      t.datetime :cancelled_at
 
       t.references :customer
       t.references :consultants

@@ -8,7 +8,7 @@ class BillAnalysesController < ApplicationController
   def create
     @bill = BillAnalysis.new(bill_params)
     if @bill.save
-      @flash[:notice] = 'Bill Analysis was created!'
+      flash[:notice] = 'Bill Analysis was created!'
       redirect_to @bill
     else
       flash[:alert] = @bill.errors.full_messages.join(', ')

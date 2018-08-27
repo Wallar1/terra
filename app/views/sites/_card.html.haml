@@ -5,8 +5,9 @@
     %p.card-text= site['address']
     %p.card-text= site['character_notes']
   %ul.list-group.list-group-flush
-    %li.list-group-item= site['email']
-    %li.list-group-item= site['phone']
+    %li.list-group-item= site['emails'].join(', ')
+    %li.list-group-item= number_to_phone(site['phone'])
+    %li.list-group-item= site.current_stage_names
   .card-body.d-flex.justify-content-around
     %i= link_to '', site_path(site['id']), class: 'fas fa-home'
     %i= link_to '', edit_site_path(site['id']), class: 'fas fa-edit'

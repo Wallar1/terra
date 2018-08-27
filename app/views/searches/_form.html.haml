@@ -1,0 +1,43 @@
+:javascript
+  $(document).on('turbolinks:load',()=>{
+    $('#new_search').on("ajax:success", function(e,data){
+      $('#search_results').html(data)
+    })
+  })
+
+.row.gap-20.masonry.pos-r
+.masonry-item.col-md-12
+  .bgc-white.p-20.bd
+    %h6.c-grey-900 Search Sites
+    .mT-30
+      - search = Search.new
+      = form_for search, remote: true do |f|
+        .form-row
+          .form-group.col-md-6
+            %label First Name
+            = f.text_field :first_name, class: 'form-control'
+          .form-group.col-md-6
+            %label Last Name
+            = f.text_field :last_name, class: 'form-control'
+        .form-group.mb-4
+          %h6.c-grey-900 Stages
+          .form-row.mt-2
+            = f.collection_check_boxes :stage_ids, Stage.all, :id, :name do |b|
+              .form-check.d-flex.flex-row.mr-5
+                = b.check_box(class: 'form-check-input')
+                = b.label(class: 'form-check-label')
+        .form-row
+          .form-group.col-md-6
+            %label Address
+            = f.text_field :address, class: 'form-control'
+          .form-group.col-md-6
+            %label Email
+            = f.text_field :email, class: 'form-control'
+        .d-flex.justify-content-around
+          = f.submit 'Search for Customer', class: 'btn btn-primary', id: "submit_search"
+
+.row.gap-20.masonry.pos-r
+.masonry-item.col-md-12
+  .bgc-white.p-20.bd
+    %h6.c-grey-900 Results
+    #search_results

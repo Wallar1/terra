@@ -20,7 +20,7 @@ class SitesController < ApplicationController
   end
 
   def update
-    if @site.save
+    if @site.update(site_params)
       flash[:notice] = 'Customer Site was successfully updated!'
       redirect_to site_path(@site)
     else

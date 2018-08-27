@@ -17,5 +17,7 @@ Rails.application.routes.draw do
   resources :calendar_events
   resources :messages
 
-  mount ActionCable.server => '/cable'
+  post 'searches', to: 'searches#create'
+
+  #mount ActionCable.server => '/cable'
 end
