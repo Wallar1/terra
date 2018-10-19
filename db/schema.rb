@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_24_082621) do
+ActiveRecord::Schema.define(version: 2018_10_07_101648) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,11 @@ ActiveRecord::Schema.define(version: 2018_08_24_082621) do
     t.datetime "updated_at", null: false
     t.index ["deleted_at"], name: "index_designs_on_deleted_at"
     t.index ["site_id"], name: "index_designs_on_site_id"
+  end
+
+  create_table "fakemodels", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "final_contracts", force: :cascade do |t|
@@ -261,7 +266,8 @@ ActiveRecord::Schema.define(version: 2018_08_24_082621) do
     t.float "long"
     t.string "emails", default: [], array: true
     t.string "phone"
-    t.text "character_notes"
+    t.string "icon_url"
+    t.text "notes"
     t.string "cancellation_reason"
     t.datetime "cancelled_at"
     t.bigint "customer_id"

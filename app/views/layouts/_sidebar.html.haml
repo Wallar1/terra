@@ -95,22 +95,22 @@
     / ### $Sidebar Menu ###
     %ul.sidebar-menu.scrollable.pos-r
       %li.nav-item.mT-30.active
-        %a.sidebar-link{:href => "index.html"}
+        = link_to dashboard_index_path, html_options: {class: 'sidebar-link'} do
           %span.icon-holder
-            %i.c-blue-500.fas.fa-home
+            %i.c-blue-300.fas.fa-home
           %span.title Dashboard
       %li.nav-item.mT-30.active
-        %a.sidebar-link{:href => "index.html"}
+        = link_to sites_path, html_options: {class: 'sidebar-link'} do
           %span.icon-holder
-            %i.c-orange-500.fas.fa-sitemap
+            %i.c-orange-300.fas.fa-sitemap
           %span.title Pipeline
       %li.nav-item.mT-30.active
-        %a.sidebar-link{:href => "index.html"}
+        = link_to maps_path, html_options: {class: 'sidebar-link'} do
           %span.icon-holder
-            %i.c-purple-500.fas.fa-map-marker-alt
+            %i.c-purple-300.fas.fa-map-marker-alt
           %span.title Map
       %li.nav-item.mT-30.active
-        %a.sidebar-link{:href => "index.html"}
+        = link_to dashboard_index_path, html_options: {class: 'sidebar-link'} do
           %span.icon-holder
-            %i.c-pink-500.fas.fa-paperclip
+            %i.c-pink-300.fas.fa-paperclip
           %span.title Resources

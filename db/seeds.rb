@@ -33,3 +33,4 @@ design = Stage.find_or_create_by({name: 'design', children: [proposal]})
 prospect = Stage.find_or_create_by({name: 'prospect', children: [design]})
 
 Site.create({first_name: "First", last_name: "Customer", address: "1255 almar street, concord, ca, usa", lat: 37.9694491, long: -122.0296934})
+Site.create({first_name: "Second", last_name: "Customer", address: "1255 almar street, concord, ca, usa", lat: 37.969087, long: -122.029440})

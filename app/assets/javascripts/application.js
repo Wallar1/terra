@@ -16,7 +16,6 @@
 //= require bootstrap
 // i removed require rails-ujs
 //= require turbolinks
-//= require react
 //= require_tree .
 
 

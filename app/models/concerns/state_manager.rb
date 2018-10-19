@@ -70,7 +70,7 @@ module StateManager
   end
 
   def final_contract_complete?
-    return self.character_notes.present?
+    return self.notes.present?
   end
 
   def plan_set_complete?

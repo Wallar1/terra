@@ -1,6 +1,7 @@
 class SitesController < ApplicationController
   before_action :set_site, only: %i[show edit update destroy]
 
+
   def new
     @site = Site.new
   end
@@ -9,27 +10,39 @@ class SitesController < ApplicationController
   end
 
   def create
-    @site = Site.new(site_params)
-    if @site.save
-      flash[:notice] = 'Customer Site was successfully created!'
-      redirect_to site_path(@site)
-    else
-      flash[:alerts] = @site.errors.full_messages
-      redirect_to new_site_path
+    @site = check_for_site
+    respond_to do |format|
+      if @site.save
+        flash[:notice] = 'Customer Site was successfully created!'
+        format.html {redirect_to @site}
+        format.any(:js,:json) {render json: @site.to_json}
+      else
+        flash[:alerts] = @site.errors.full_messages
+        format.html {redirect_to @site}
+        format.any(:js,:json) {render json: @site.to_json}
+      end
     end
   end
 
   def update
-    if @site.update(site_params)
-      flash[:notice] = 'Customer Site was successfully updated!'
-      redirect_to site_path(@site)
-    else
-      flash[:alerts] = @site.errors.full_messages
-      redirect_to edit_site_path(@site)
+    respond_to do |format|
+      if @site.update(site_params)
+        flash[:notice] = 'Customer Site was successfully updated!'
+        format.html { redirect_to @site }
+        format.any(:json,:js) {render json: @site.to_json}
+      else
+        flash[:alerts] = @site.errors.full_messages
+        format.html { redirect_to edit_site_path(@site) }
+        format.any(:json,:js) {render json: @site}
+      end
     end
   end
 
   def show
+  end
+
+  def index
+    @sites = Site.all
   end
 
   def destroy
@@ -44,6 +57,16 @@ class SitesController < ApplicationController
 
 
   private
+
+  def check_for_site
+    if(Site.find_by_lat(site_params['lat']))
+      site = Site.find_by_lat(site_params['lat'])
+      site.attributes = site_params
+      return site
+    else
+      return Site.new(site_params)
+    end
+  end
 
   def site_params
     params.require(:site).permit!

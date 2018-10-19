@@ -200,7 +200,7 @@
       .bgc-white.p-20.bd
         %h6.c-grey-900= site.new_record? ? 'New Customer' : site.full_name
         .mT-30
-          = form_for site do |f|
+          = form_for Site.last do |f|
             = f.hidden_field :lat
             = f.hidden_field :long
             .form-row
@@ -222,10 +222,10 @@
                 = f.text_field :phone, class: 'form-control'
             .form-group
               %label Character Notes
-              = f.text_area :character_notes, class: 'form-control', rows: '5'
+              = f.text_area :notes, class: 'form-control', rows: '5'
             .form-group
               %label Stage Change
-              = f.select :stage_change, options_for_select(Stage.all.pluck(:name)), {include_blank: true}, {class: 'form-control'}
+              = f.select :icon_url, options_for_select(Stage.all.pluck(:name)), {include_blank: true}, {class: 'form-control'}
             .d-flex.justify-content-around
               = f.submit 'Save Customer', class: 'btn btn-primary'
               - if !site.new_record?

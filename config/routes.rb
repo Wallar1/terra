@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  get 'hello_world', to: 'hello_world#index'
+
+  if Rails.env.development?
+    mount GraphiQL::Rails::Engine, at: "/graphiql", graphql_path: "/graphql"
+  end
+  post "/graphql", to: "graphql#execute"
   root 'dashboard#index'
   get 'login', to: redirect('/auth/google_oauth2'), as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
@@ -18,6 +22,9 @@ Rails.application.routes.draw do
   resources :calendar_events
   resources :messages
 
+  get 'maps', to: 'maps#index', as: 'maps'
+  get 'maps/all_sites_details', to: 'maps#all_sites_details'
+  
   post 'searches', to: 'searches#create'
 
   #mount ActionCable.server => '/cable'

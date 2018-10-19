@@ -3,11 +3,11 @@
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title Testwebpack
+    %link{rel:"shortcut icon", type: "image/png", href: URI("assets/stellar_favicon.png")}
     = csrf_meta_tags
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
-    = javascript_pack_tag 'application'
-    = javascript_pack_tag 'hello-world-bundle'
+    = javascript_pack_tag 'application_and_react'
   %body.app
     //%a{href: "#{asset_path 'vcard.vcf'}", download: ''} download me
     = render partial: 'layouts/loader'

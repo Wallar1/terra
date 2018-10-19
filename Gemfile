@@ -19,6 +19,7 @@ gem "aws-sdk-s3", require: false
 gem 'omniauth-google-oauth2'
 gem 'image_processing', '~> 1.2'
 gem "mini_magick"
+gem 'graphql'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
@@ -68,3 +69,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'mini_racer', platforms: :ruby
+gem 'graphiql-rails', group: :development

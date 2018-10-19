@@ -1,0 +1,2 @@
+class Fakemodel < ApplicationRecord
+end

@@ -7,7 +7,8 @@
 
     var markers = JSON.parse('#{ raw @sites_details}').map(function(site) {
       marker = new google.maps.Marker({
-        position: site.latlng
+        position: site.latlng,
+        map: map
       });
       marker.addListener('click', function() {
         open_info(marker,map,infowindow,site)
@@ -27,14 +28,51 @@
     }
     // Add a marker clusterer to manage the markers.
     var markerCluster = new MarkerClusterer(map, markers, {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+    
+
+    // USE for drawing on the map
+    // var drawingManager = new google.maps.drawing.DrawingManager({
+    //   drawingMode: google.maps.drawing.OverlayType.MARKER,
+    //   drawingControl: true,
+    //   drawingControlOptions: {
+    //     position: google.maps.ControlPosition.TOP_CENTER,
+    //     drawingModes: ['marker', 'circle', 'polygon', 'polyline', 'rectangle']
+    //   },
+    //   circleOptions: {
+    //     fillColor: '#ffff00',
+    //     fillOpacity: 1,
+    //     strokeWeight: 5,
+    //     clickable: false,
+    //     editable: true,
+    //     zIndex: 1
+    //   }
+    // });
+    // drawingManager.setMap(map);
 
     var infowindow = new google.maps.InfoWindow({
       content: ''
     });
+
+    map.addListener('click', function(e) {
+      marker = new google.maps.Marker({
+        position: e.latLng,
+        map: map,
+        animation: google.maps.Animation.DROP,
+        draggable:true
+      });
+      map.panTo(e.latLng)
+    });
   }
 
+  $(document).on('turbolinks:load',()=>{
+    script = document.getElementById('google_maps_api')
+    if(script){
+      script.onload = ()=> initMap()
+    }
+  })
 
-%script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=initMap"}
+
+%script{:async => "", :defer => "defer", :src => "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&libraries=drawing", id: 'google_maps_api'}
 %script{src: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"}
 .layer.w-100{style: 'height: 500px;'}
   #mappy.w-100.h-100
