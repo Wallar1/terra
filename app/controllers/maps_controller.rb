@@ -5,25 +5,9 @@ class MapsController < ApplicationController
 
   # also sets @sites
   def all_sites_details
-    details = []
-    @sites = []
-    Site.all.each do |site|
-      next if site.lat.blank? || site.long.blank?
-      details << {
-                    latlng: {lat: site.lat, lng: site.long},
-                    #infowindowcontent: ApplicationController.render('maps/_infowindow', locals: {:@site => site}, layout: false).gsub(/\n/,''),
-                    id: site.id,
-                    icon_url: site.icon_url.present? ? site.icon_url : 'house_question.png',
-                    first_name: site.first_name || '',
-                    last_name: site.last_name || '',
-                    address: site.address || '',
-                    email: site.emails || [],
-                    phone: site.phone || '',
-                    notes: site.notes || '',
-                  }
-      @sites << site
+    respond_to do |format|
+      format.any(:js,:json){render json: Site.all_sites_details}
     end
-    render json: details.to_json
   end
 
   # def get_icon stage

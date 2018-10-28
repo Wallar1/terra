@@ -35,11 +35,11 @@ export default class GoogleMap extends Component {
     await Promise.all(
         [loadScript(map_src),
         loadScript(cluster_src),
-        this.fetchSites('/maps/all_sites_details')],
+        this.fetchSites('/maps/all_sites_details.json')],
       )
     let values = await Promise.all([
         this.initMap(),
-        this.initGeolator(),
+        //this.initGeolator(),
       ])
     //values[0].panTo(values[1])
   }
@@ -93,7 +93,6 @@ export default class GoogleMap extends Component {
   }
 
   create_markers = (map, sites_details) => {
-
     sites_details = sites_details || [...this.state.sites_details]
     let infowindow = this.state.infowindow !== '' ? this.state.infowindow : new google.maps.InfoWindow({
       content: ''
@@ -102,18 +101,18 @@ export default class GoogleMap extends Component {
     this.state.markers.forEach((m)=>{
       m.setMap(null)
     })
-
     let markers = sites_details.map((site)=>{
       let marker = new google.maps.Marker({
-        position: site.latlng,
+        position: site.latlng || this.state.current_position,
         map: map,
-        icon: {url: `/assets/${site.icon_url}`, scaledSize: new google.maps.Size(35,25)},
+        icon: {url: `/assets/${site.icon_url}`, scaledSize: new google.maps.Size(60,50)},
+        id: site.id,
       });
       marker.addListener('click', ()=>{
         this.open_info(marker,map,infowindow,site)
         this.setState({
-          current_position: site.latlng,
-          site_id: site.id,
+          current_position: site.latlng || this.state.current_position,
+          site_id: site.id || this.state.site_id,
           first_name: site.first_name,
           last_name: site.last_name,
           address: site.address,
@@ -131,6 +130,29 @@ export default class GoogleMap extends Component {
     });
     this.setState({markers, infowindow})
     return markers
+  }
+
+  rnd = (num, decimal_places) =>{
+    let dec = Math.pow(10,decimal_places)
+    return Math.round(num * dec)/dec
+  }
+
+  update_marker_icon = (latlng, val)=> {
+    let rnd = (num, decimal_places) =>{
+      let dec = Math.pow(10,decimal_places)
+      return Math.round(num * dec)/dec
+    }
+
+    let markers = [...this.state.markers]
+    let marker = markers.filter((m)=>{
+      return rnd(m.position.lat(),12) === rnd(latlng.lat,12) && rnd(m.position.lng(),12) === rnd(latlng.lng,12)
+    })[0]
+    markers = markers.filter((m)=>{
+      return rnd(m.position.lat(),12) !== rnd(latlng.lat,12) || rnd(m.position.lng(),12) !== rnd(latlng.lng,12)
+    })
+    marker.icon = {url: `/assets/${val}`, scaledSize: new google.maps.Size(60,50)}
+    marker.setMap(this.state.map)
+    this.setState({markers: [...markers, marker]})
   }
 
   infowindowcontent = (attrs) => {
@@ -170,7 +192,7 @@ export default class GoogleMap extends Component {
     // })
     this.state.map.panTo(latLng)
     //this.state.markerCluster.addMarker(marker)
-    let markers = {...this.state.markers, marker}
+    let markers = [...this.state.markers, marker]
 
     this.setState({
       current_position: {lat: latLng.lat(), lng: latLng.lng()},
@@ -231,12 +253,13 @@ export default class GoogleMap extends Component {
           phone: this.state.phone,
           notes: this.state.notes,
           icon_url: this.state.icon_url,
+          address: this.state.address,
         }
       }
     }).then((response)=>{
-      let id = response.data.id
-      this.setState({site_id: id})
-      this.change_site_details('id', id, id)
+      this.setState({site_id: response.data.site.id, sites_details: response.data.sites_details})
+      //this.update_marker_icon(response.data.site.id, response.data.site.icon_url)
+      //this.create_markers(this.state.map, response.data.sites_details)
     })
   }
 
@@ -255,7 +278,8 @@ export default class GoogleMap extends Component {
     sites_details = [...sites_details.filter((s)=>{return s.id !== site.id}),site]
     this.setState({sites_details})
     if(key === 'icon_url'){
-      this.create_markers(this.state.map,sites_details)
+      this.update_marker_icon(site.latlng,val)
+      //this.create_markers(this.state.map,sites_details)
     }
     this.state.infowindow.setOptions({
       content: this.infowindowcontent({first_name: site.first_name, last_name: site.last_name, address: site.address}),

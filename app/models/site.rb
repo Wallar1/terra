@@ -51,5 +51,28 @@ class Site < ApplicationRecord
       end 
     end
     return stages.uniq.join(', ')
-  end  
+  end
+
+
+  def self.all_sites_details
+    details = []
+    @sites = []
+    Site.all.each do |site|
+      next if site.lat.blank? || site.long.blank?
+      details << {
+                    latlng: {lat: site.lat, lng: site.long},
+                    #infowindowcontent: ApplicationController.render('maps/_infowindow', locals: {:@site => site}, layout: false).gsub(/\n/,''),
+                    id: site.id,
+                    icon_url: site.icon_url.present? ? site.icon_url : 'house_question.png',
+                    first_name: site.first_name || '',
+                    last_name: site.last_name || '',
+                    address: site.address || '',
+                    email: site.emails || [],
+                    phone: site.phone || '',
+                    notes: site.notes || '',
+                  }
+      @sites << site
+    end
+    details
+  end
 end

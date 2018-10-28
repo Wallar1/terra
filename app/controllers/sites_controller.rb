@@ -15,7 +15,7 @@ class SitesController < ApplicationController
       if @site.save
         flash[:notice] = 'Customer Site was successfully created!'
         format.html {redirect_to @site}
-        format.any(:js,:json) {render json: @site.to_json}
+        format.any(:js,:json) {render json: {site: @site, sites_details: Site.all_sites_details}}
       else
         flash[:alerts] = @site.errors.full_messages
         format.html {redirect_to @site}
@@ -29,7 +29,7 @@ class SitesController < ApplicationController
       if @site.update(site_params)
         flash[:notice] = 'Customer Site was successfully updated!'
         format.html { redirect_to @site }
-        format.any(:json,:js) {render json: @site.to_json}
+        format.any(:json,:js) {render json: {site: @site, sites_details: Site.all_sites_details}}
       else
         flash[:alerts] = @site.errors.full_messages
         format.html { redirect_to edit_site_path(@site) }
