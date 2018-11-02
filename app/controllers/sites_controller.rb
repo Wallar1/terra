@@ -15,7 +15,7 @@ class SitesController < ApplicationController
       if @site.save
         flash[:notice] = 'Customer Site was successfully created!'
         format.html {redirect_to @site}
-        format.any(:js,:json) {render json: {site: @site, sites_details: Site.all_sites_details}}
+        format.any(:js,:json) {render json: {site: @site, sites: Site.all_sites_with_pos}}
       else
         flash[:alerts] = @site.errors.full_messages
         format.html {redirect_to @site}
@@ -29,7 +29,7 @@ class SitesController < ApplicationController
       if @site.update(site_params)
         flash[:notice] = 'Customer Site was successfully updated!'
         format.html { redirect_to @site }
-        format.any(:json,:js) {render json: {site: @site, sites_details: Site.all_sites_details}}
+        format.any(:json,:js) {render json: {site: @site, sites: Site.all_sites_with_pos}}
       else
         flash[:alerts] = @site.errors.full_messages
         format.html { redirect_to edit_site_path(@site) }
@@ -69,19 +69,19 @@ class SitesController < ApplicationController
   end
 
   def site_params
-    params.require(:site).permit!
-
-    # t.string :first_name
-    #   t.string :last_name
-    #   t.string :address
-    #   t.float :lat
-    #   t.float :long
-    #   t.string :email
-    #   t.string :phone
-    #   t.references :customer
-    #   t.references :consultant
-
-    #   t.datetime :deleted_at
+    params.require(:site).permit(
+      :id,
+      :first_name,
+      :last_name,
+      :address,
+      :lat,
+      :lng,
+      :phone,
+      :notes,
+      :icon_url,
+      :pos,
+      :emails => [],
+    )
   end
 
   def set_site

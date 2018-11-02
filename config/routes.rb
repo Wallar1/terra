@@ -23,7 +23,7 @@ Rails.application.routes.draw do
   resources :messages
 
   get 'maps', to: 'maps#index', as: 'maps'
-  get 'maps/all_sites_details', to: 'maps#all_sites_details'
+  get 'maps/all_sites_with_pos', to: 'maps#all_sites_with_pos'
   
   post 'searches', to: 'searches#create'
 

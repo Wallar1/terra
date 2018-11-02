@@ -9,8 +9,8 @@ export default class SiteForm extends Component{
   }
 
   render_delete = () => {
-    if(this.props.id){
-      return <a data-confirm="Are you sure you want to delete this site?" class="text-white btn btn-danger" rel="nofollow" data-method="delete" href={`/sites/${this.props.id}`}>Delete</a>
+    if(this.props.site.id){
+      return <a data-confirm="Are you sure you want to delete this site?" className="text-white btn btn-danger" rel="nofollow" data-method="delete" href={`/sites/${this.props.site.id}`}>Delete</a>
     }
     return
   }
@@ -29,10 +29,10 @@ export default class SiteForm extends Component{
               <p> New Customer </p>
             </h6>
             <div className="mT-30">
-              <form key={this.props.current_position.lat} id="site_form" acceptCharset="UTF-8" method="patch">
+              <form key={this.props.site.lat} id="site_form" acceptCharset="UTF-8" method="patch">
                 <input name="utf8" type="hidden" value="✓" onChange={this.props.changeForm}/>
-                <input type="hidden" name="lat" id="site_lat" value={this.props.current_position.lat} onChange={this.props.changeForm}/>
-                <input type="hidden" name="long" id="site_long" value={this.props.current_position.lng} onChange={this.props.changeForm}/>
+                <input type="hidden" name="lat" id="site_lat" value={this.props.site.lat} onChange={this.props.changeForm}/>
+                <input type="hidden" name="long" id="site_long" value={this.props.site.lng} onChange={this.props.changeForm}/>
                 <div className="form-row">
                   <div className="form-group">
                     <label>Stage</label>
@@ -50,36 +50,35 @@ export default class SiteForm extends Component{
                 <div className="form-row">
                   <div className="form-group col-md-6">
                     <label>First Name</label>
-                    <input className="form-control" type="text" name="first_name" id="site_first_name" value={this.props.first_name} onChange={this.props.changeForm}/>
+                    <input className="form-control" type="text" name="first_name" id="site_first_name" value={this.props.site.first_name} onChange={this.props.changeForm}/>
                   </div>
                   <div className="form-group col-md-6">
                     <label>Last Name</label>
-                    <input className="form-control" type="text" name="last_name" id="site_last_name" value={this.props.last_name} onChange={this.props.changeForm}/>
+                    <input className="form-control" type="text" name="last_name" id="site_last_name" value={this.props.site.last_name} onChange={this.props.changeForm}/>
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Full Address</label>
-                  <input className="form-control" placeholder="ex: 1234 Main St, San Fransisco, CA, USA" type="text" name="address" id="site_address" value={this.props.address} onChange={this.props.changeForm}/>
+                  <input className="form-control" placeholder="ex: 1234 Main St, San Fransisco, CA, USA" type="text" name="address" id="site_address" value={this.props.site.address} onChange={this.props.changeForm}/>
                 </div>
                 <div className="form-row">
                   <div className="form-group col-md-6">
                     <label>Email</label>
-                    <input name="emails[]" type="hidden" value={this.props.emails} onChange={this.props.changeForm}/>
+                    <input name="emails[]" type="hidden" value={this.props.site.emails} onChange={this.props.changeForm}/>
                     {/*
                     <div className="bootstrap-tagsinput">
                       <MyInput type="text" placeholder="" />
-                    </div>
-                  */}
+                    </div>*/}
                     <select multiple="multiple" data-role="tagsinput" name="emails[]" id="site_emails" style={{display: 'none'}}></select>
                   </div>
                   <div className="form-group col-md-6">
                     <label>Phone</label>
-                    <input className="form-control" type="text" name="phone" id="site_phone" value={this.props.phone} onChange={this.props.changeForm}/>
+                    <input className="form-control" type="text" name="phone" id="site_phone" value={this.props.site.phone} onChange={this.props.changeForm}/>
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Notes</label>
-                  <textarea className="form-control" rows="5" name="notes" id="site_notes" value={this.props.notes} onChange={this.props.changeForm}/>
+                  <textarea className="form-control" rows="5" name="notes" id="site_notes" value={this.props.site.notes} onChange={this.props.changeForm}/>
                 </div>
 
 
@@ -90,7 +89,7 @@ export default class SiteForm extends Component{
                   <MySelect label="Stage" options={{call_back: 'Call Back', go_back: 'Go Back'}} value='go_back' />
                 <div className="form-group">
                   <label>Stage Change</label>
-                  <select className="form-control" onChange={this.change_stage} value={this.props.stage}>
+                  <select className="form-control" onChange={this.change_stage} value={this.props.site.stage}>
                       - CB Call Back - phone
                       - GB Go Back - refresh
                       - APPT Appointment set - calendar
@@ -119,7 +118,6 @@ export default class SiteForm extends Component{
                 <div className="d-flex justify-content-around">
                   <button name="commit" className="btn btn-primary" onClick={this.props.submit}> Save Customer </button>
                   {this.render_delete()}
-                  {/*<a data-confirm="Are you sure you want to delete this site?" class="text-white btn btn-danger" rel="nofollow" data-method="delete" href="/sites/1">Delete</a>*/}
                 </div>
               </form>
             </div>

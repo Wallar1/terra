@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 2018_10_07_101648) do
     t.string "last_name"
     t.string "address"
     t.float "lat"
-    t.float "long"
+    t.float "lng"
     t.string "emails", default: [], array: true
     t.string "phone"
     t.string "icon_url"

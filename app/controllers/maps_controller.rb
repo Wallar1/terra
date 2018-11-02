@@ -4,9 +4,9 @@ class MapsController < ApplicationController
   end
 
   # also sets @sites
-  def all_sites_details
+  def all_sites_with_pos
     respond_to do |format|
-      format.any(:js,:json){render json: Site.all_sites_details}
+      format.any(:js,:json){render json: Site.all_sites_with_pos}
     end
   end
 

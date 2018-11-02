@@ -1,9 +1,7 @@
 {
-  "application.js": "/packs/application-f76069e2037c211a0be1.js",
-  "application.js.map": "/packs/application-f76069e2037c211a0be1.js.map",
   "application_and_react.css": "/packs/application_and_react-79f3dac4f7da797117c76f2a1f72c8e1.css",
-  "application_and_react.js": "/packs/application_and_react-dc0ce9183f9f273e4722.js",
-  "application_and_react.js.map": "/packs/application_and_react-dc0ce9183f9f273e4722.js.map",
+  "application_and_react.js": "/packs/application_and_react-97e4dbd402e4ad1fcc8e.js",
+  "application_and_react.js.map": "/packs/application_and_react-97e4dbd402e4ad1fcc8e.js.map",
   "charts/chartJS/index.js": "/packs/charts/chartJS/index-0bd264c91b095c01f719.js",
   "charts/chartJS/index.js.map": "/packs/charts/chartJS/index-0bd264c91b095c01f719.js.map",
   "charts/easyPieChart/index.js": "/packs/charts/easyPieChart/index-a08ce7e171fab9244be8.js",

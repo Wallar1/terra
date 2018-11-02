@@ -15,7 +15,7 @@ class Site < ApplicationRecord
   has_many :site_stages
   has_many :stages, through: :site_stages
 
-  has_and_belongs_to_many :reasons_to_email
+  # has_and_belongs_to_many :reasons_to_email
 
   attr_accessor :stage_change
 
@@ -54,25 +54,24 @@ class Site < ApplicationRecord
   end
 
 
-  def self.all_sites_details
-    details = []
-    @sites = []
+  def self.all_sites_with_pos
+    @sites = {}
     Site.all.each do |site|
-      next if site.lat.blank? || site.long.blank?
-      details << {
-                    latlng: {lat: site.lat, lng: site.long},
-                    #infowindowcontent: ApplicationController.render('maps/_infowindow', locals: {:@site => site}, layout: false).gsub(/\n/,''),
-                    id: site.id,
-                    icon_url: site.icon_url.present? ? site.icon_url : 'house_question.png',
-                    first_name: site.first_name || '',
-                    last_name: site.last_name || '',
-                    address: site.address || '',
-                    email: site.emails || [],
-                    phone: site.phone || '',
-                    notes: site.notes || '',
-                  }
-      @sites << site
+      next if site.lat.blank? || site.lng.blank?
+      @sites[site.id] = {
+          lat: site.lat, 
+          lng: site.lng,
+          #infowindowcontent: ApplicationController.render('maps/_infowindow', locals: {:@site => site}, layout: false).gsub(/\n/,''),
+          id: site.id,
+          icon_url: site.icon_url.present? ? site.icon_url : 'house_question.png',
+          first_name: site.first_name || '',
+          last_name: site.last_name || '',
+          address: site.address || '',
+          email: site.emails || [],
+          phone: site.phone || '',
+          notes: site.notes || '',
+      }
     end
-    details
+    @sites
   end
 end
