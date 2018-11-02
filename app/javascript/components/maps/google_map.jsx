@@ -37,16 +37,6 @@ export default class GoogleMap extends Component {
     //values[0].panTo(values[1])
   }
 
-  render(){
-    return (
-      <div className='layer w-100' style={{height: '500px'}}>
-        <div id='mappy' className='w-100 h-100'></div>
-        <div style={{height: '50px', margin: '10px'}} ></div>
-        <SiteForm {...this.state} submit={this.submit_form_e} create_marker={this.create_marker} changeForm={this.onChange}/>
-      </div>
-    )
-  }
-
   fetchSites = async (url) => {
     await axios.get(url)
     .then(response => {
@@ -324,5 +314,20 @@ export default class GoogleMap extends Component {
     marker.setMap(this.state.map)
     markers[`${lat}${lng}`] = marker
     this.setState({markers, marker})
+  }
+
+
+  render(){
+    return (
+      <div className='layer w-100' style={{height: '500px'}}>
+        <div className='w-100 h-100 fixed-top' style={{maxHeight: '500px'}}>
+          <div id='mappy' className='w-100 h-100'></div>
+        </div>
+        <div className='w-100 h-100' style={{maxHeight: '500px'}}></div>
+        <div style={{height: '50px', margin: '10px'}} ></div>
+        <SiteForm {...this.state} submit={this.submit_form_e} create_marker={this.create_marker} changeForm={this.onChange}/>
+        <div className='w-100 h-100' style={{maxHeight: '300px'}}></div>
+      </div>
+    )
   }
 }
