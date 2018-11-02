@@ -58,7 +58,7 @@ class Site < ApplicationRecord
     @sites = {}
     Site.all.each do |site|
       next if site.lat.blank? || site.lng.blank?
-      @sites[site.id] = {
+      @sites["#{site.lat}#{site.lng}"] = {
           lat: site.lat, 
           lng: site.lng,
           #infowindowcontent: ApplicationController.render('maps/_infowindow', locals: {:@site => site}, layout: false).gsub(/\n/,''),

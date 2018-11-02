@@ -20,6 +20,7 @@ export default class GoogleMap extends Component {
       marker: {},
       map: undefined,
       infowindow: {},
+      initial: true
     }
   }
 
@@ -128,29 +129,36 @@ export default class GoogleMap extends Component {
       position: pos,
       map: this.state.map,
       animation: google.maps.Animation.DROP,
-      draggable: true,
       icon: {url: `/assets/${s.icon_url}` || '/assets/house_question.png', scaledSize: new google.maps.Size(60,50)},
       site: s,
     });
 
-    marker.addListener('click', ()=>{
-      this.open_info(marker)
+    let listener = marker.addListener('click', ()=>{
+      let ss = this.merge_site(this.find_site_by_pos({lat: site.lat, lng: site.lng}))
+      this.open_info(marker, ss)
       this.setState({
-        site: site,
+        site: ss,
         marker: marker,
+        initial: false,
       })
     });
 
     return marker
   }
 
+  merge_site = (site)=> {
+    return {...this.state.site,...site}
+  }
+
   create_marker_and_submit = (pos) => {
     let marker = this.create_marker(pos)
+    this.open_info(marker)
     let markers = {...this.state.markers}
     markers[`${marker.position.lat}${marker.position.lng}`] = marker
     let site = marker.site
     delete site.id //this is because NotNullViolation error when id is null
-    this.setState({site, markers, marker})
+    let initial = false
+    this.setState({site, markers, marker, initial})
     this.submit_form(`/sites.json`,'post',site)
   }
 
@@ -181,20 +189,25 @@ export default class GoogleMap extends Component {
     let dec = Math.pow(10,decimal_places)
     return Math.round(num * dec)/dec
   }
+  
+  precise = (num, sigfigs) => {
+    return Number.parseFloat(num).toPrecision(sigfigs);
+  }
 
 
-  open_info = (marker,map,infowindow) =>{
+  open_info = (marker,site) =>{
+    let map = this.state.map
+    let infowindow = this.state.infowindow
     marker = marker || this.state.marker
-    map = map || this.state.map
-    infowindow = infowindow || this.state.infowindow
+    site = site || this.state.site
 
     infowindow.open(map, marker);
     infowindow.setOptions({
       position: marker.position,
       content: this.infowindowcontent({
-        first_name: marker.site.first_name,
-        last_name: marker.site.last_name,
-        address: marker.site.address
+        first_name: site.first_name,
+        last_name: site.last_name,
+        address: site.address
       }),
     })
   }
@@ -215,11 +228,7 @@ export default class GoogleMap extends Component {
 
   find_site_by_pos = (pos) => {
     pos = this.pos_fmt(pos || this.pos_state())
-    let site = {... this.state.sites[`${pos.lat}${pos.lng}`]}
-    // let site = Object.assign({}, this.state.sites.filter((site)=>{
-    //             return this.rnd(pos.lat,12) === this.rnd(site.pos.lat,12) &&
-    //                   this.rnd(pos.lng,12) === this.rnd(site.pos.lng,12)
-    //           })[0])
+    let site = {... this.state.sites[`${this.precise(pos.lat,15)}${this.precise(pos.lng,15)}`]}
     return this.is_empty(site) ? undefined : site
   }
 
@@ -277,8 +286,9 @@ export default class GoogleMap extends Component {
       responseType:'json',
       data: {site: site}
     }).then((response)=>{
+      site.id = response.data.site.id
       this.setState({
-        site: {...site, id: response.data.site.id},
+        site: site,
         sites: response.data.sites
       })
       //this.update_marker_icon(response.data.site.id, response.data.site.icon_url)

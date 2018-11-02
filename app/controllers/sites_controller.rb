@@ -48,10 +48,10 @@ class SitesController < ApplicationController
   def destroy
     if @site.destroy
       flash[:notice] = 'Site destroyed successfully'
-      redirect_to root_path
+      redirect_to maps_path
     else
       flash[:alerts] = @site.errors.full_messages
-      redirect_to edit_site_path(@site)
+      #redirect_to maps_path
     end
   end
 

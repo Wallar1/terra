@@ -2,3 +2,9 @@ input:checked ~ .housebtn {
   border: 4px solid green;
   border-radius: 10px;
 }
+
+.form-control, .bootstrap-tagsinput input {
+  height: calc(4.0625rem + 2px);
+  font-size: 1.65rem;
+  line-height: 3;
+}
