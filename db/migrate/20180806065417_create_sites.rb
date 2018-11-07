@@ -6,7 +6,8 @@ class CreateSites < ActiveRecord::Migration[5.1]
       t.string :address
       t.float :lat
       t.float :lng
-      t.string :emails, array: true, default: []
+      #t.string :emails, array: true, default: []
+      t.string :email
       t.string :phone
       t.string :icon_url
       t.text :notes

@@ -21,7 +21,7 @@ class Site < ApplicationRecord
 
 
   before_save do
-    clean_emails
+    #clean_emails
     initial_stage
     move_to_next_stage?
   end
@@ -34,9 +34,9 @@ class Site < ApplicationRecord
     end
   end
 
-  def clean_emails
-    self.emails = self.emails.select{|e| e.present?}.uniq
-  end
+  # def clean_emails
+  #   self.emails = self.emails.select{|e| e.present?}.uniq
+  # end
 
 
   def current_stage_names
@@ -67,7 +67,7 @@ class Site < ApplicationRecord
           first_name: site.first_name || '',
           last_name: site.last_name || '',
           address: site.address || '',
-          email: site.emails || [],
+          email: site.email || '',
           phone: site.phone || '',
           notes: site.notes || '',
       }

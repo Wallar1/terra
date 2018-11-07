@@ -80,7 +80,8 @@ class SitesController < ApplicationController
       :notes,
       :icon_url,
       :pos,
-      :emails => [],
+      :email
+      #:emails => [],
     )
   end
 

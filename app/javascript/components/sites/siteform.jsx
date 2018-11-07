@@ -87,6 +87,10 @@ export default class SiteForm extends Component{
                     <label>Phone</label>
                     <input className="form-control" type="text" name="phone" id="site_phone" value={this.props.site.phone} onChange={this.props.changeForm}/>
                   </div>
+                  <div className="form-group col-md-12">
+                    <label>Email</label>
+                    <input className="form-control" type="text" name="email" id="site_email" value={this.props.site.email} onChange={this.props.changeForm}/>
+                  </div>
                 </div>
                 <div className="form-group">
                   <label>Notes</label>
