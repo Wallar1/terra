@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {hydrate} from 'react-dom'
+import { renderToString } from 'react-dom/server';
 import {loadScript} from './google_loaders'
 import axios from 'axios';
 import SiteForm from '../sites/siteform'
@@ -14,13 +16,13 @@ export default class GoogleMap extends Component {
     super(props)
     this.state = {
       sites: {},
-      site: {} || this.empty_site(),
+      site: this.empty_site(),
       geocoder: undefined,
       markers: {},
       marker: {},
       map: undefined,
       infowindow: {},
-      initial: true
+      selected_input: 'site_first_name'
     }
   }
 
@@ -94,7 +96,7 @@ export default class GoogleMap extends Component {
 
 
   empty_site = (pos) => {
-    pos = this.pos_fmt(pos)
+    pos = pos ? this.pos_fmt(pos) : {lat: 37.9036044480292, lng: -122.06859790227156}
     return {
       id: '',
       first_name: '',
@@ -104,8 +106,8 @@ export default class GoogleMap extends Component {
       phone: '',
       notes: '',
       icon_url: 'house_question.png',
-      lat: pos.lat || 37.9036044480292,
-      lng: pos.lng || -122.06859790227156,
+      lat: pos.lat,
+      lng: pos.lng,
     }
   }
 
@@ -129,7 +131,6 @@ export default class GoogleMap extends Component {
       this.setState({
         site: ss,
         marker: marker,
-        initial: false,
       })
     });
 
@@ -140,6 +141,10 @@ export default class GoogleMap extends Component {
     return {...this.state.site,...site}
   }
 
+  change_selected_input = (e) => {
+    this.setState({selected_input: e.target.id})
+  }
+
   create_marker_and_submit = (pos) => {
     let marker = this.create_marker(pos)
     this.open_info(marker)
@@ -147,16 +152,18 @@ export default class GoogleMap extends Component {
     markers[`${marker.position.lat}${marker.position.lng}`] = marker
     let site = marker.site
     delete site.id //this is because NotNullViolation error when id is null
-    let initial = false
-    this.setState({site, markers, marker, initial})
+    this.setState({site, markers, marker})
     this.submit_form(`/sites.json`,'post',site)
   }
 
   create_markers = (map) => {
     let sites = {...this.state.sites}
     let infowindow = this.is_empty(this.state.infowindow)
-      ? new google.maps.InfoWindow({content: ''})
+      ? new google.maps.InfoWindow({content: this.infowindowcontent()})
       : this.state.infowindow;
+
+    //the content is an html string, so we need to hydrate the form
+    infowindow.addListener('domready',()=>{this.hydrate_form()})
 
     //We start from scratch with this function
     Object.keys(this.state.markers).forEach(
@@ -173,6 +180,17 @@ export default class GoogleMap extends Component {
     );
     this.setState({markers, infowindow})
     return markers
+  }
+
+  hydrate_form = () => {
+    hydrate(
+      <SiteForm {...this.state} 
+                submit={this.submit_form_e}
+                create_marker={this.create_marker}
+                changeForm={this.onChange}
+      />,
+      document.getElementById('siteform_container')
+    )
   }
 
   rnd = (num, decimal_places) =>{
@@ -194,20 +212,20 @@ export default class GoogleMap extends Component {
     infowindow.open(map, marker);
     infowindow.setOptions({
       position: marker.position,
-      content: this.infowindowcontent({
-        first_name: site.first_name,
-        last_name: site.last_name,
-        address: site.address
-      }),
+      content: this.infowindowcontent()
     })
   }
 
-  infowindowcontent = (attrs) => {
-    let {first_name, last_name, address} = attrs
-    return (`<div>
-              <h4>${first_name} ${last_name}</h4>
-              <p>${address}</p>
-            </div>`
+  infowindowcontent = () => {
+    return renderToString(
+        <div id="siteform_container">
+          <SiteForm {...this.state} 
+                    submit={this.submit_form_e}
+                    create_marker={this.create_marker}
+                    changeForm={this.onChange}
+                    change_selected_input={this.change_selected_input}
+          />
+        </div>
     )
   }
 
@@ -286,24 +304,25 @@ export default class GoogleMap extends Component {
   }
 
   onChange = (e) => {
-    this.update_sites(e.target.name, e.target.value)
+    this.update_sites(e.target.name, e.target.value, e)
   }
 
-  update_sites = (key, val) => {
+  update_sites = (key, val, e) => {
     let site = {...this.state.site}
     site[key] = val
 
     let sites = {...this.state.sites}
     sites[`${site.lat}${site.lng}`] = site
 
-    this.setState({site, sites})
+    this.setState({site, sites, selected_input: e.target.id})
 
     if(key === 'icon_url'){
       this.update_marker_icon(site.lat,site.lng,val)
     }
     this.state.infowindow.setOptions({
-      content: this.infowindowcontent({first_name: site.first_name, last_name: site.last_name, address: site.address}),
+      content: this.infowindowcontent()
     })
+    e.target.focus()
   }
 
 
@@ -319,14 +338,10 @@ export default class GoogleMap extends Component {
 
   render(){
     return (
-      <div className='layer w-100' style={{height: '500px'}}>
-        <div className='w-100 h-100 fixed-top' style={{maxHeight: '500px'}}>
+      <div className='layer w-100 h-100'>
+        <div className='w-100 h-100 fixed-top' style={{maxHeight: '100%'}}>
           <div id='mappy' className='w-100 h-100'></div>
         </div>
-        <div className='w-100 h-100' style={{maxHeight: '500px'}}></div>
-        <div style={{height: '50px', margin: '10px'}} ></div>
-        <SiteForm {...this.state} submit={this.submit_form_e} create_marker={this.create_marker} changeForm={this.onChange}/>
-        <div className='w-100 h-100' style={{maxHeight: '300px'}}></div>
       </div>
     )
   }

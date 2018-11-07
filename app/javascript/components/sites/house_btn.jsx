@@ -40,7 +40,7 @@ class HouseBtn extends Component {
               {/*question_mark
             </g>
           </svg>*/}
-          <input className='position-absolute w-100 h-100' name={this.props.name} type="radio" value={stages[this.props.stage]} onClick={this.props.changeForm} style={{cursor: 'pointer', opacity: 0}}/>
+          <input id='site_icon_url' className='position-absolute w-100 h-100' name={this.props.name} type="radio" value={stages[this.props.stage]} onClick={this.props.changeForm} style={{cursor: 'pointer', opacity: 0}}/>
           <img src={`/assets/${stages[this.props.stage]}`} className='w-100 housebtn'/>
         </div>
       </div>
