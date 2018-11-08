@@ -29,6 +29,7 @@ export default class SiteForm extends Component{
   }
 
   componentDidMount(){
+    console.log('form mounted')
     $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput()
     this.reselect_and_focus()
   }
