@@ -308,7 +308,7 @@ export default class GoogleMap extends Component {
                     change_selected_input={this.change_selected_input}
                     close_form={this.close_form}
           />
-          <div id='mappy' className='w-100 h-100' style={{minHeight: '1000px'}}></div>
+          <div id='mappy' className='w-100 h-100' style={{minHeight: '2000px'}}></div>
         </div>
       </div>
     )

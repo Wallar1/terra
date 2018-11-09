@@ -10,9 +10,9 @@ export default class SiteForm extends Component{
 
   render_delete = () => {
     if(this.props.site.id){
-      return <a suppressHydrationWarning={true} data-confirm="Are you sure you want to delete this site?" className="text-white btn btn-danger" rel="nofollow" data-method="delete" href={`/sites/${this.props.site.id}`}>Delete</a>
+      return <a data-confirm="Are you sure you want to delete this site?" className="text-white btn btn-danger" rel="nofollow" data-method="delete" href={`/sites/${this.props.site.id}`}>Delete</a>
     }
-    return <a suppressHydrationWarning={true}></a>
+    return <a></a>
   }
 
 
@@ -21,13 +21,15 @@ export default class SiteForm extends Component{
   }
 
   render(){
-    if(!this.props.form_is_opened){return <div></div>}
+    if(!this.props.form_is_opened){
+      return <div></div>
+    }
     return (
       <Fragment>
         <div className="row gap-20 masonry pos-r"></div>
         <div className="masonry-item col-md-12">
           <div className="bgc-white p-20 bd">
-            <div className="mT-30" style={{maxHeight: '400px', overflowX: 'scroll'}}>
+            <div className="mT-30">
               <form key={this.props.site.lat} id="site_form" acceptCharset="UTF-8" method="patch">
                 <div className="d-flex justify-content-around">
                   <button type='button' className="btn btn-primary" onClick={this.props.submit}> Save Customer </button>
