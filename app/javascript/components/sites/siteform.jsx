@@ -15,33 +15,25 @@ export default class SiteForm extends Component{
     return <a suppressHydrationWarning={true}></a>
   }
 
-  // change_stage = (e)=>{
-  //   this.setState({stage: e.target.value})
-  // }
-
-  reselect_and_focus = () => {
-    let el = document.getElementById(this.props.selected_input)
-    if(el.type !== 'text' && el.type !== 'textarea'){return}
-
-    let strLength = el.value.length * 2 //*2 to make sure the focus goes to the end or beyond
-    el.focus()
-    el.setSelectionRange(strLength, strLength)
-  }
 
   componentDidMount(){
-    console.log('form mounted')
     $("input[data-role=tagsinput], select[multiple][data-role=tagsinput]").tagsinput()
-    this.reselect_and_focus()
   }
 
   render(){
+    if(!this.props.form_is_opened){return <div></div>}
     return (
       <Fragment>
         <div className="row gap-20 masonry pos-r"></div>
         <div className="masonry-item col-md-12">
           <div className="bgc-white p-20 bd">
-            <div className="mT-30">
+            <div className="mT-30" style={{maxHeight: '400px', overflowX: 'scroll'}}>
               <form key={this.props.site.lat} id="site_form" acceptCharset="UTF-8" method="patch">
+                <div className="d-flex justify-content-around">
+                  <button type='button' className="btn btn-primary" onClick={this.props.submit}> Save Customer </button>
+                  {this.render_delete()}
+                  <button type='button' className='btn btn-warning' onClick={this.props.close_form}> Close </button>
+                </div>
                 <input name="utf8" type="hidden" value="✓" onChange={this.props.changeForm}/>
                 <input type="hidden" name="lat" id="site_lat" value={this.props.site.lat} onChange={this.props.changeForm}/>
                 <input type="hidden" name="long" id="site_long" value={this.props.site.lng} onChange={this.props.changeForm}/>
@@ -60,11 +52,11 @@ export default class SiteForm extends Component{
                   </div>
                 </div>
                 <div className="form-row">
-                  <div className="form-group col-md-12">
+                  <div className="form-group col-md-6">
                     <label>First Name</label>
                     <input className="form-control" type="text" name="first_name" id="site_first_name" value={this.props.site.first_name} onChange={this.props.changeForm}/>
                   </div>
-                  <div className="form-group col-md-12">
+                  <div className="form-group col-md-6">
                     <label>Last Name</label>
                     <input className="form-control" type="text" name="last_name" id="site_last_name" value={this.props.site.last_name} onChange={this.props.changeForm}/>
                   </div>
@@ -84,24 +76,19 @@ export default class SiteForm extends Component{
                     </div>
                     <select multiple="true" data-role="tagsinput" name="emails[]" id="site_emails" style={{display: 'none'}}></select>
                   </div> */}
-                  <div className="form-group col-md-12">
+                  <div className="form-group col-md-6">
                     <label>Phone</label>
                     <input className="form-control" type="text" name="phone" id="site_phone" value={this.props.site.phone} onChange={this.props.changeForm}/>
                   </div>
-                  <div className="form-group col-md-12">
+                  <div className="form-group col-md-6">
                     <label>Email</label>
                     <input className="form-control" type="text" name="email" id="site_email" value={this.props.site.email} onChange={this.props.changeForm}/>
                   </div>
                 </div>
                 <div className="form-group">
                   <label>Notes</label>
-                  <textarea className="form-control" rows="5" name="notes" id="site_notes" onChange={this.props.changeForm} onClick={this.props.change_selected_input}>{this.props.site.notes}</textarea>
+                  <textarea className="form-control" rows="3" name="notes" id="site_notes" onChange={this.props.changeForm} onClick={this.props.change_selected_input} value={this.props.site.notes} />
                 </div>
-
-
-
-
-
                 {/*
                   <MySelect label="Stage" options={{call_back: 'Call Back', go_back: 'Go Back'}} value='go_back' />
                 <div className="form-group">
@@ -132,10 +119,6 @@ export default class SiteForm extends Component{
                     <option value="installed_already">Installed Already</option>
                   </select>
                 </div>*/}
-                <div className="d-flex justify-content-around">
-                  <button type='button' className="btn btn-primary" onClick={this.props.submit}> Save Customer </button>
-                  {this.render_delete()}
-                </div>
               </form>
             </div>
           </div>

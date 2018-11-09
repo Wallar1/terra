@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import {hydrate} from 'react-dom'
-import { renderToString } from 'react-dom/server';
 import {loadScript} from './google_loaders'
 import axios from 'axios';
 import SiteForm from '../sites/siteform'
@@ -21,8 +19,8 @@ export default class GoogleMap extends Component {
       markers: {},
       marker: {},
       map: undefined,
-      infowindow: {},
-      selected_input: 'site_first_name'
+      selected_input: 'site_first_name',
+      form_is_opened: false,
     }
   }
 
@@ -128,7 +126,7 @@ export default class GoogleMap extends Component {
 
     let listener = marker.addListener('click', ()=>{
       let ss = this.merge_site(this.find_site_by_pos({lat: site.lat, lng: site.lng}))
-      this.open_info(marker, ss)
+      this.open_form()
       this.setState({
         site: ss,
         marker: marker,
@@ -148,7 +146,7 @@ export default class GoogleMap extends Component {
 
   create_marker_and_submit = (pos) => {
     let marker = this.create_marker(pos)
-    this.open_info(marker)
+    this.open_form()
     let markers = {...this.state.markers}
     markers[`${marker.position.lat}${marker.position.lng}`] = marker
     let site = marker.site
@@ -159,12 +157,6 @@ export default class GoogleMap extends Component {
 
   create_markers = (map) => {
     let sites = {...this.state.sites}
-    let infowindow = this.is_empty(this.state.infowindow)
-      ? new google.maps.InfoWindow({content: this.infowindowcontent()})
-      : this.state.infowindow;
-
-    //the content is an html string, so we need to hydrate the form
-    infowindow.addListener('domready',()=>{this.hydrate_form()})
 
     //We start from scratch with this function
     Object.keys(this.state.markers).forEach(
@@ -179,19 +171,8 @@ export default class GoogleMap extends Component {
         markers[`${site.lat}${site.lng}`] = this.create_marker(pos,map,site)
       }
     );
-    this.setState({markers, infowindow})
+    this.setState({markers})
     return markers
-  }
-
-  hydrate_form = () => {
-    hydrate(
-      <SiteForm {...this.state} 
-                submit={this.submit_form_e}
-                create_marker={this.create_marker}
-                changeForm={this.onChange}
-      />,
-      document.getElementById('siteform_container')
-    )
   }
 
   rnd = (num, decimal_places) =>{
@@ -204,30 +185,12 @@ export default class GoogleMap extends Component {
   }
 
 
-  open_info = (marker,site) =>{
-    let map = this.state.map
-    let infowindow = this.state.infowindow
-    marker = marker || this.state.marker
-    site = site || this.state.site
-
-    infowindow.open(map, marker);
-    infowindow.setOptions({
-      position: marker.position,
-      content: this.infowindowcontent()
-    })
+  open_form = () =>{
+    this.setState({form_is_opened: true})
   }
 
-  infowindowcontent = () => {
-    return renderToString(
-        <div id="siteform_container">
-          <SiteForm {...this.state} 
-                    submit={this.submit_form_e}
-                    create_marker={this.create_marker}
-                    changeForm={this.onChange}
-                    change_selected_input={this.change_selected_input}
-          />
-        </div>
-    )
+  close_form = () => {
+    this.setState({form_is_opened: false})
   }
 
   create_marker_event = (e) =>{
@@ -320,9 +283,6 @@ export default class GoogleMap extends Component {
     if(key === 'icon_url'){
       this.update_marker_icon(site.lat,site.lng,val)
     }
-    this.state.infowindow.setOptions({
-      content: this.infowindowcontent()
-    })
     e.target.focus()
   }
 
@@ -340,8 +300,15 @@ export default class GoogleMap extends Component {
   render(){
     return (
       <div className='layer w-100 h-100'>
-        <div className='w-100 h-100 fixed-top' style={{maxHeight: '100%'}}>
-          <div id='mappy' className='w-100 h-100'></div>
+        <div className='w-100 h-100'>
+          <SiteForm {...this.state} 
+                    submit={this.submit_form_e}
+                    create_marker={this.create_marker}
+                    changeForm={this.onChange}
+                    change_selected_input={this.change_selected_input}
+                    close_form={this.close_form}
+          />
+          <div id='mappy' className='w-100 h-100' style={{minHeight: '1000px'}}></div>
         </div>
       </div>
     )
