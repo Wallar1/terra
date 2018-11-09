@@ -50,7 +50,7 @@ export default class GoogleMap extends Component {
   initMap = async () => {
     let map = new window.google.maps.Map(document.getElementById('mappy'), {
       center: this.get_start_pos(),
-      zoom: 15,
+      zoom: 16,
     });
     let markers = this.create_markers(map);
     // Add a marker clusterer to manage the markers.
@@ -120,16 +120,17 @@ export default class GoogleMap extends Component {
       position: pos,
       map: this.state.map,
       animation: google.maps.Animation.DROP,
-      icon: {url: `/assets/${s.icon_url}` || '/assets/house_question.png', scaledSize: new google.maps.Size(60,50)},
+      icon: {url: `/assets/${s.icon_url}` || '/assets/house_question.png', scaledSize: new google.maps.Size(120,100)},
       site: s,
     });
 
     let listener = marker.addListener('click', ()=>{
-      let ss = this.merge_site(this.find_site_by_pos({lat: site.lat, lng: site.lng}))
-      this.open_form()
+      let ss = this.merge_site(this.find_site_by_pos(pos))
+      map.setOptions({zoom: 19, center: pos})
       this.setState({
         site: ss,
         marker: marker,
+        form_is_opened: true,
       })
     });
 
@@ -146,12 +147,11 @@ export default class GoogleMap extends Component {
 
   create_marker_and_submit = (pos) => {
     let marker = this.create_marker(pos)
-    this.open_form()
     let markers = {...this.state.markers}
     markers[`${marker.position.lat}${marker.position.lng}`] = marker
     let site = marker.site
     delete site.id //this is because NotNullViolation error when id is null
-    this.setState({site, markers, marker})
+    this.setState({site, markers, marker, form_is_opened: true})
     this.submit_form(`/sites.json`,'post',site)
   }
 
@@ -182,15 +182,6 @@ export default class GoogleMap extends Component {
   
   precise = (num, sigfigs) => {
     return Number.parseFloat(num).toPrecision(sigfigs);
-  }
-
-
-  open_form = () =>{
-    this.setState({form_is_opened: true})
-  }
-
-  close_form = () => {
-    this.setState({form_is_opened: false})
   }
 
   create_marker_event = (e) =>{
@@ -306,7 +297,7 @@ export default class GoogleMap extends Component {
                     create_marker={this.create_marker}
                     changeForm={this.onChange}
                     change_selected_input={this.change_selected_input}
-                    close_form={this.close_form}
+                    close_form={()=>{this.setState({form_is_opened: false})}}
           />
           <div id='mappy' className='w-100 h-100' style={{minHeight: '2000px'}}></div>
         </div>
