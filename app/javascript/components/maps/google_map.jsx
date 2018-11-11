@@ -21,6 +21,7 @@ export default class GoogleMap extends Component {
       map: undefined,
       selected_input: 'site_first_name',
       form_is_opened: false,
+      infowindow: {},
     }
   }
 
@@ -126,7 +127,8 @@ export default class GoogleMap extends Component {
 
     let listener = marker.addListener('click', ()=>{
       let ss = this.merge_site(this.find_site_by_pos(pos))
-      map.setOptions({zoom: 19, center: pos})
+      map.setOptions({zoom: 19, center: {...pos, lat: pos.lat - .001}}) // on mobile, the form moves the house out of the frame
+      this.open_info(marker,ss)
       this.setState({
         site: ss,
         marker: marker,
@@ -150,6 +152,7 @@ export default class GoogleMap extends Component {
     let markers = {...this.state.markers}
     markers[`${marker.position.lat}${marker.position.lng}`] = marker
     let site = marker.site
+    this.open_info(marker,site)
     delete site.id //this is because NotNullViolation error when id is null
     this.setState({site, markers, marker, form_is_opened: true})
     this.submit_form(`/sites.json`,'post',site)
@@ -157,6 +160,11 @@ export default class GoogleMap extends Component {
 
   create_markers = (map) => {
     let sites = {...this.state.sites}
+
+    let infowindow = this.is_empty(this.state.infowindow)
+      ? new google.maps.InfoWindow({content: this.infowindowcontent()})
+      : this.state.infowindow 
+
 
     //We start from scratch with this function
     Object.keys(this.state.markers).forEach(
@@ -171,7 +179,7 @@ export default class GoogleMap extends Component {
         markers[`${site.lat}${site.lng}`] = this.create_marker(pos,map,site)
       }
     );
-    this.setState({markers})
+    this.setState({markers, infowindow})
     return markers
   }
 
@@ -234,6 +242,37 @@ export default class GoogleMap extends Component {
       //this.initGeolator()
     return start_pos
   }
+
+
+  open_info = (marker,site) => {
+    let map = this.state.map;
+    let infowindow = this.state.infowindow;
+    marker = marker || this.state.marker
+    site = site || this.state.site
+
+    infowindow.open(map,marker)
+    infowindow.setOptions({
+      position: marker.position,
+      content: this.infowindowcontent(site)
+    })
+  }
+
+  infowindowcontent = (site) => {
+    site = site || this.state.site
+    return (
+      `<div class="card">
+        <h5 class="card-header">${site.first_name} ${site.last_name}</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">${site.address}</li>
+          <li class="list-group-item">${site.phone}</li>
+          <li class="list-group-item">${site.email}</li>
+        </ul>
+        <div class="card-body">
+          <p class="card-text">${site.notes}</p>
+        </div>
+      </div>`
+    )
+  }
   
 
   submit_form_e = (e) => {
@@ -274,6 +313,11 @@ export default class GoogleMap extends Component {
     if(key === 'icon_url'){
       this.update_marker_icon(site.lat,site.lng,val)
     }
+
+    this.state.infowindow.setOptions({
+      content: this.infowindowcontent(site)
+    })
+
     e.target.focus()
   }
 
@@ -281,7 +325,7 @@ export default class GoogleMap extends Component {
   update_marker_icon = (lat, lng, icon_url) => {
     let marker = this.state.marker
     let markers = {...this.state.markers}
-    marker.icon = {url: `/assets/${icon_url}`, scaledSize: new google.maps.Size(60,50)}
+    marker.icon = {url: `/assets/${icon_url}`, scaledSize: new google.maps.Size(120,100)}
     marker.setMap(this.state.map)
     markers[`${lat}${lng}`] = marker
     this.setState({markers, marker})

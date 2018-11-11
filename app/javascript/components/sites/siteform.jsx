@@ -43,13 +43,17 @@ export default class SiteForm extends Component{
                   <div className="form-group">
                     <label>Stage</label>
                     <div className='d-flex'>
-                      <HouseBtn stage='call_back' name="icon_url" changeForm={this.props.changeForm}/>
-                      <HouseBtn stage='go_back' name="icon_url" changeForm={this.props.changeForm}/>
-                      <HouseBtn stage='not_home' name="icon_url" changeForm={this.props.changeForm}/>
-                      <HouseBtn stage='not_interested' name="icon_url" changeForm={this.props.changeForm}/>
-                      <HouseBtn stage='renter' name="icon_url" changeForm={this.props.changeForm}/>
-                      <HouseBtn stage='not_qualified' name="icon_url" changeForm={this.props.changeForm}/>
-                      <HouseBtn stage='under_contract' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='cb' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='gb' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='appt' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='nh' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='ni' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='rent' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='nq' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='uc' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='cl' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='sol' name="icon_url" changeForm={this.props.changeForm}/>
+                      <HouseBtn stage='ins' name="icon_url" changeForm={this.props.changeForm}/>
                     </div>
                   </div>
                 </div>
