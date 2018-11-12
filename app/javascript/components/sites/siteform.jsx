@@ -10,7 +10,7 @@ export default class SiteForm extends Component{
 
   render_delete = () => {
     if(this.props.site.id){
-      return <a data-confirm="Are you sure you want to delete this site?" className="text-white btn btn-danger" rel="nofollow" data-method="delete" href={`/sites/${this.props.site.id}`}>Delete</a>
+      return <a data-confirm="Are you sure you want to delete this site?" className="text-white btn btn-danger btn-lg btn-block m-20" rel="nofollow" data-method="delete" href={`/sites/${this.props.site.id}`}>Delete</a>
     }
     return <a></a>
   }
@@ -32,9 +32,9 @@ export default class SiteForm extends Component{
             <div className="mT-30">
               <form key={this.props.site.lat} id="site_form" acceptCharset="UTF-8" method="patch">
                 <div className="d-flex justify-content-around">
-                  <button type='button' className="btn btn-primary" onClick={this.props.submit}> Save Customer </button>
+                  <button type='button' className="btn btn-success btn-lg btn-block m-20" onClick={this.props.submit}> Save Customer </button>
                   {this.render_delete()}
-                  <button type='button' className='btn btn-warning' onClick={this.props.close_form}> Close </button>
+                  <button type='button' className='btn btn-secondary btn-lg btn-block m-20' onClick={this.props.close_form}> Close Form </button>
                 </div>
                 <input name="utf8" type="hidden" value="✓" onChange={this.props.changeForm}/>
                 <input type="hidden" name="lat" id="site_lat" value={this.props.site.lat} onChange={this.props.changeForm}/>
