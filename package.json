@@ -21,6 +21,7 @@
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-on-rails": "11.1.8",
+    "readline-sync": "^1.4.9",
     "skycons": "^1.0.0",
     "themify-icons": "^1.0.0",
     "xmlhttprequest": "^1.8.0"

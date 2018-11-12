@@ -95844,6 +95844,6 @@ input:checked ~ .housebtn {
 /* line 6, /Users/robertwallace/Documents/terra/app/assets/stylesheets/master.scss */
 .form-control, .bootstrap-tagsinput input {
   height: calc(4.0625rem + 2px);
-  font-size: 1.65rem;
+  font-size: 3rem;
   line-height: 3;
 }
