@@ -69,7 +69,7 @@ export default class SiteForm extends Component{
                 </div>
                 <div className="form-group">
                   <label>Full Address</label>
-                  <input className="form-control" placeholder="ex: 1234 Main St, San Fransisco, CA, USA" type="text" name="address" id="site_address" value={this.props.site.address} onChange={this.props.changeForm}/>
+                  <input className="form-control" placeholder={this.props.address_guess} type="text" name="address" id="site_address" value={this.props.site.address} onChange={this.props.changeForm}/>
                 </div>
                 <div className="form-row">
                   {/*

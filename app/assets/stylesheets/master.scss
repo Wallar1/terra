@@ -9,6 +9,10 @@ input:checked ~ .housebtn {
   line-height: 1;
 }
 
+.form-control::placeholder{
+  opacity: .2;
+}
+
 .m-20{
   margin: 20px;
 }

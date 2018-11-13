@@ -15,13 +15,13 @@ export default class GoogleMap extends Component {
     this.state = {
       sites: {},
       site: this.empty_site(),
-      geocoder: undefined,
       markers: {},
       marker: {},
       map: undefined,
-      selected_input: 'site_first_name',
       form_is_opened: false,
       infowindow: {},
+      center: {},
+      address_guess: '',
     }
   }
 
@@ -33,9 +33,10 @@ export default class GoogleMap extends Component {
       )
     let values = await Promise.all([
         this.initMap(),
-        //this.initGeolator(),
+        this.geolocate(),
       ])
-    //values[0].panTo(values[1])
+    values[0].panTo(values[1])
+    this.guess_address(values[1])
   }
 
   fetchSites = async (url) => {
@@ -63,35 +64,34 @@ export default class GoogleMap extends Component {
     return map
   }
 
-  initGeolator = async () => {
-    let location = axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`,{})
+  geolocate = async () => {
+    if(navigator.geolocation){
+      let pos = navigator.geolocation.getCurrentPosition((pos)=>{return pos})
+      return pos ? pos : this.geolocate_fallback()
+    }
+    else{
+      return this.geolocate_fallback()
+    }
+  }
+  
+  geolocate_fallback = async () => {
+    return axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`,{})
       .then((response)=>{
-        this.setState({pos: response['data']['location']})
+        //this.setState({pos: response['data']['location']})
         return response['data']['location']
       })
-    return location
   }
 
-  // guess_address = (response) => {
-  //   // if($('#site_address').val() !== ''){
-  //   //   return
-  //   // }
-  //   this.state.geocoder.geocode({'location': response['data']['location']}, (results, status) =>{
-  //     console.log(results)
-  //     if (status === 'OK') {
-  //       if (results[0]) {
-  //         this.setState({pos: results[0]['geometry']['location']})
 
-  //         // $('#site_address').val(results[0]['formatted_address'])
-  //         // set_latlng()
-  //       } else {
-  //         window.alert('No results found');
-  //       }
-  //     } else {
-  //       window.alert('Geocoder failed due to: ' + status);
-  //     }
-  //   });
-  // }
+  guess_address = async (pos) => {
+    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${API_KEY}`)
+      .then((response)=>{
+        if(response && response['data']){
+          this.setState({address_guess: response['data']['results'][0]['formatted_address']})
+        }
+        return response
+      })
+  }
 
 
   empty_site = (pos) => {
@@ -129,6 +129,7 @@ export default class GoogleMap extends Component {
       let ss = this.merge_site(this.find_site_by_pos(pos))
       map.setOptions({zoom: 19, center: {...pos, lat: pos.lat - .001}}) // on mobile, the form moves the house out of the frame
       this.open_info(marker,ss)
+      this.guess_address(pos)
       this.setState({
         site: ss,
         marker: marker,
@@ -199,7 +200,8 @@ export default class GoogleMap extends Component {
 
   find_site_by_pos = (pos) => {
     pos = this.pos_fmt(pos || this.pos_state())
-    let site = {... this.state.sites[`${this.precise(pos.lat,15)}${this.precise(pos.lng,15)}`]}
+    let site = {... this.state.sites[`${pos.lat}${pos.lng}`]}
+    //let site = {... this.state.sites[`${this.precise(pos.lat,15)}${this.precise(pos.lng,15)}`]}
     return this.is_empty(site) ? undefined : site
   }
 

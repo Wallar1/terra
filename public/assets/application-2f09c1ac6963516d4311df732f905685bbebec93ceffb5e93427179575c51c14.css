@@ -95845,4 +95845,24 @@ input:checked ~ .housebtn {
 .form-control, .bootstrap-tagsinput input {
   height: calc(4.0625rem + 2px);
   font-size: 3rem;
+  line-height: 1;
+}
+
+/* line 12, /Users/robertwallace/Documents/terra/app/assets/stylesheets/master.scss */
+.form-control::-webkit-input-placeholder {
+  opacity: .2;
+}
+.form-control:-ms-input-placeholder {
+  opacity: .2;
+}
+.form-control::-ms-input-placeholder {
+  opacity: .2;
+}
+.form-control::placeholder {
+  opacity: .2;
+}
+
+/* line 16, /Users/robertwallace/Documents/terra/app/assets/stylesheets/master.scss */
+.m-20 {
+  margin: 20px;
 }
