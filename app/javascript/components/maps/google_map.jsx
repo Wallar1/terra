@@ -4,8 +4,10 @@ import axios from 'axios';
 import SiteForm from '../sites/siteform'
 
 const API_KEY =  require('./api_key').API_KEY
+const CLIENT_ID = '524281801147-7p3q0uvbt5pq3ptddsfrc6lfrrd7efh5.apps.googleusercontent.com'
 const map_src = `https://maps.googleapis.com/maps/api/js?libraries=drawing&key=${API_KEY}`
 const cluster_src = `https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js`
+const people_src = "https://apis.google.com/js/api.js"
 
 require('babel-polyfill');
 
@@ -29,13 +31,17 @@ export default class GoogleMap extends Component {
     await Promise.all(
         [loadScript(map_src),
         loadScript(cluster_src),
-        this.fetchSites('/maps/all_sites_with_pos.json')],
+        //loadScript(people_src),
+        this.fetchSites('/maps/all_sites_with_pos.json'),
+        ],
       )
     let values = await Promise.all([
         this.initMap(),
         this.geolocate(),
+        //gapi.load('client:auth2', this.init_people_api)
       ])
     values[0].panTo(values[1])
+    this.create_current_pos_marker(values[1],values[0])
     this.guess_address(values[1])
   }
 
@@ -65,13 +71,14 @@ export default class GoogleMap extends Component {
   }
 
   geolocate = async () => {
-    if(navigator.geolocation){
-      let pos = navigator.geolocation.getCurrentPosition((pos)=>{return pos})
-      return pos ? pos : this.geolocate_fallback()
-    }
-    else{
-      return this.geolocate_fallback()
-    }
+    // if(navigator.geolocation){
+    //   let pos = navigator.geolocation.getCurrentPosition((pos)=>{return pos})
+    //   return pos ? pos : this.geolocate_fallback()
+    // }
+    // else{
+    //   return this.geolocate_fallback()
+    // }
+    return this.geolocate_fallback()
   }
   
   geolocate_fallback = async () => {
@@ -82,6 +89,30 @@ export default class GoogleMap extends Component {
       })
   }
 
+  init_people_api = async () => {
+    await gapi.client.init({
+      apiKey: API_KEY,
+      clientId: CLIENT_ID,
+      scope: "https://www.googleapis.com/auth/contacts",
+    })
+    await gapi.client.people.people.connections.list({
+      'resourceName': 'people/me',
+      'pageSize': 10,
+      'personFields': 'names,emailAddresses',
+    }).then(function(response) {
+      console.log(response)
+    })
+  }
+
+  list_contacts = async () => {
+    window.gapi.client.people.people.connections.list({
+      'resourceName': 'people/me',
+      'pageSize': 10,
+      'personFields': 'names,emailAddresses',
+    }).then(function(response) {
+      console.log(response)
+    })
+  }
 
   guess_address = async (pos) => {
     return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${API_KEY}`)
@@ -110,6 +141,17 @@ export default class GoogleMap extends Component {
       lng: pos.lng,
     }
   }
+
+  create_current_pos_marker = (pos, map) => {
+    map = map || this.state.map
+
+    let marker = new google.maps.Marker({
+      position: pos,
+      map: this.state.map,
+      animation: google.maps.Animation.BOUNCE,
+      icon: {url: '/assets/current_location.png', scaledSize: new google.maps.Size(120,100)},
+    });
+  } 
 
   // pos needs to have {lat: float, lng: float}
   create_marker = (pos, map, site) => {
