@@ -19,3 +19,15 @@ module Testwebpack
     # -- all .rb files in that directory are automatically loaded.
   end
 end
+
+
+#Official Process for precompiling:
+
+#First clobber: rails assets:clobber
+#then precompile: rails assets:precompile
+#Delete the yarn.lock file
+#then stage those changes
+#Delete node modules folder
+#then npm install
+#It will make a new manifest for some reason, so delete these new changes
+#and commit! :)

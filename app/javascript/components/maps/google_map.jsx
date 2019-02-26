@@ -3,12 +3,6 @@ import {loadScript} from './google_loaders'
 import axios from 'axios';
 import SiteForm from '../sites/siteform'
 
-const API_KEY =  require('./api_key').API_KEY
-const CLIENT_ID = '524281801147-7p3q0uvbt5pq3ptddsfrc6lfrrd7efh5.apps.googleusercontent.com'
-const map_src = `https://maps.googleapis.com/maps/api/js?libraries=drawing&key=${API_KEY}`
-const cluster_src = `https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js`
-const people_src = "https://apis.google.com/js/api.js"
-
 require('babel-polyfill');
 
 export default class GoogleMap extends Component {
@@ -25,20 +19,25 @@ export default class GoogleMap extends Component {
       center: {},
       address_guess: '',
     }
+    this.API_KEY = props.API_KEY
+    this.CLIENT_ID = props.CLIENT_ID
+    this.map_src = `https://maps.googleapis.com/maps/api/js?libraries=drawing&key=${this.API_KEY}`
+    this.cluster_src = `https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js`
+    this.people_src = "https://apis.google.com/js/api.js"
   }
 
   async componentDidMount(){
     await Promise.all(
-        [loadScript(map_src),
-        loadScript(cluster_src),
-        //loadScript(people_src),
+        [loadScript(this.map_src),
+        loadScript(this.cluster_src),
+        loadScript(this.people_src),
         this.fetchSites('/maps/all_sites_with_pos.json'),
         ],
       )
     let values = await Promise.all([
         this.initMap(),
         this.geolocate(),
-        //gapi.load('client:auth2', this.init_people_api)
+        gapi.load('client:auth2', this.init_people_api)
       ])
     values[0].panTo(values[1])
     this.create_current_pos_marker(values[1],values[0])
@@ -58,7 +57,7 @@ export default class GoogleMap extends Component {
   initMap = async () => {
     let map = new window.google.maps.Map(document.getElementById('mappy'), {
       center: this.get_start_pos(),
-      zoom: 16,
+      zoom: 19,
     });
     let markers = this.create_markers(map);
     // Add a marker clusterer to manage the markers.
@@ -71,30 +70,36 @@ export default class GoogleMap extends Component {
   }
 
   geolocate = async () => {
-    // if(navigator.geolocation){
-    //   let pos = navigator.geolocation.getCurrentPosition((pos)=>{return pos})
-    //   return pos ? pos : this.geolocate_fallback()
-    // }
+    if(navigator.geolocation){
+      let pos = navigator.geolocation.getCurrentPosition((pos)=>{return pos})
+      return pos ? pos : this.geolocate_fallback()
+    }
     // else{
     //   return this.geolocate_fallback()
     // }
-    return this.geolocate_fallback()
   }
   
   geolocate_fallback = async () => {
-    return axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${API_KEY}`,{})
+    return axios.post(`https://www.googleapis.com/geolocation/v1/geolocate?key=${this.API_KEY}`,{})
       .then((response)=>{
-        //this.setState({pos: response['data']['location']})
+        this.setState({center: response['data']['location']})
         return response['data']['location']
       })
   }
 
+
+  // init_people_api = async () => {
+  //   return axios.get(`https://people.googleapis.com/v1/people/me/connections?pageSize=10&personFields=names%2CemailAddresses&key=${this.API_KEY}`)
+  //     .then(res => console.log(res))
+  // }
+
   init_people_api = async () => {
     await gapi.client.init({
-      apiKey: API_KEY,
-      clientId: CLIENT_ID,
+      apiKey: this.API_KEY,
+      clientId: this.CLIENT_ID,
       scope: "https://www.googleapis.com/auth/contacts",
     })
+    console.log(gapi.client)
     await gapi.client.people.people.connections.list({
       'resourceName': 'people/me',
       'pageSize': 10,
@@ -104,18 +109,18 @@ export default class GoogleMap extends Component {
     })
   }
 
-  list_contacts = async () => {
-    window.gapi.client.people.people.connections.list({
-      'resourceName': 'people/me',
-      'pageSize': 10,
-      'personFields': 'names,emailAddresses',
-    }).then(function(response) {
-      console.log(response)
-    })
-  }
+  // list_contacts = async () => {
+  //   window.gapi.client.people.people.connections.list({
+  //     'resourceName': 'people/me',
+  //     'pageSize': 10,
+  //     'personFields': 'names,emailAddresses',
+  //   }).then(function(response) {
+  //     console.log(response)
+  //   })
+  // }
 
   guess_address = async (pos) => {
-    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${API_KEY}`)
+    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${pos.lat},${pos.lng}&key=${this.API_KEY}`)
       .then((response)=>{
         if(response && response['data']){
           this.setState({address_guess: response['data']['results'][0]['formatted_address']})
@@ -133,7 +138,6 @@ export default class GoogleMap extends Component {
       last_name: '',
       address: '',
       email: '',
-      //emails: [], 
       phone: '',
       notes: '',
       icon_url: 'house_question.png',
@@ -153,7 +157,6 @@ export default class GoogleMap extends Component {
     });
   } 
 
-  // pos needs to have {lat: float, lng: float}
   create_marker = (pos, map, site) => {
     map = map || this.state.map
     site = site || this.find_site_by_pos(pos) || this.empty_site(pos)
@@ -387,7 +390,7 @@ export default class GoogleMap extends Component {
                     change_selected_input={this.change_selected_input}
                     close_form={()=>{this.setState({form_is_opened: false})}}
           />
-          <div id='mappy' className='w-100 h-100' style={{minHeight: '2000px'}}></div>
+          <div id='mappy' className='w-100 h-100' style={{minHeight: '100vh'}}></div>
         </div>
       </div>
     )

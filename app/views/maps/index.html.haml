@@ -1,2 +1,2 @@
 = #render partial: 'show', locals: {:@sites => @sites, :@sites_details => @sites_details}
-= react_component('GoogleMap')
+= react_component('GoogleMap', props: {CLIENT_ID: ENV['GOOGLE_CLIENT_ID'], API_KEY: ENV['GOOGLE_API_KEY']})

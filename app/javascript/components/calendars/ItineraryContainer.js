@@ -11,8 +11,6 @@ export default class CalAPICont extends Component{
       all_events: [],
       listUpcomingEvents: this.listUpcomingEvents
     }
-    this.API_KEY='AIzaSyAumnE5AAGlwEN3upr12zjMLKPw7Z1BPDU'
-    this.CLIENT_ID='524281801147-7p3q0uvbt5pq3ptddsfrc6lfrrd7efh5.apps.googleusercontent.com'
     this.DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
     this.SCOPES = "https://www.googleapis.com/auth/calendar";
   }

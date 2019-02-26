@@ -5,9 +5,8 @@ import {loadScript} from './google_loaders'
 
 
 
-const API_KEY =  require('./api_key').API_KEY
 
-let GEOCODER
+let GEOCODER, API_KEY
 
 export default class GoogleGeolocation extends Component {
   constructor(){

@@ -1,1 +1,0 @@
-export let API_KEY = "AIzaSyAumnE5AAGlwEN3upr12zjMLKPw7Z1BPDU"
