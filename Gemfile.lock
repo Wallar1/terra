@@ -179,7 +179,7 @@ GEM
       byebug (~> 11.0)
       pry (~> 0.10)
     public_suffix (3.0.3)
-    puma (3.12.1)
+    puma (3.12.4)
     rack (2.0.6)
     rack-proxy (0.6.5)
       rack
@@ -301,7 +301,7 @@ DEPENDENCIES
   perfect-scrollbar-rails
   pg
   pry-byebug
-  puma (~> 3.7)
+  puma (~> 3.12)
   rails (~> 5.2.0)
   react_on_rails (= 11.0.9)
   sass-rails (~> 5.0)
